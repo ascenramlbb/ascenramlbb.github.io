@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="id">
+<html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -389,6 +389,17 @@
 
   .price-cell{text-align:right; font-family:'Rajdhani',sans-serif; font-weight:700; font-size:18px; color:var(--gold-soft); white-space:nowrap;}
   .price-cell sup{font-size:11.5px; font-weight:600; color:var(--text-dim); font-family:'Plus Jakarta Sans';}
+  .price-main{font-family:'Rajdhani',sans-serif; font-weight:700; font-size:18px; color:var(--gold-soft);}
+  .price-main sup{font-size:11.5px; font-weight:600; color:var(--text-dim); font-family:'Plus Jakarta Sans';}
+  .price-alt{display:flex; justify-content:flex-end; gap:6px; margin-top:7px; flex-wrap:wrap;}
+  .cur-pill{
+    font-family:'JetBrains Mono',monospace; font-weight:600; font-size:12.5px; color:var(--text-primary);
+    background:rgba(109,93,252,0.1); border:1px solid rgba(109,93,252,0.3);
+    padding:3px 9px; border-radius:7px; white-space:nowrap; letter-spacing:0.01em;
+  }
+  .cur-pill.myr{background:rgba(109,93,252,0.1); border-color:rgba(109,93,252,0.3);}
+  .cur-pill.idr{background:rgba(232,184,75,0.08); border-color:rgba(232,184,75,0.28);}
+  .pkg-price-alt{display:flex; gap:6px; margin-top:8px; margin-bottom:18px; flex-wrap:wrap;}
 
   .badge-popular{
     font-size:9.5px; font-weight:700; letter-spacing:0.06em; text-transform:uppercase;
@@ -401,6 +412,8 @@
     .price-table thead th, .price-table tbody td{padding:13px 14px;}
     .tier-name{font-size:14.5px;}
     .price-cell{font-size:15.5px;}
+    .price-main{font-size:15.5px;}
+    .cur-pill{font-size:11px; padding:2.5px 7px;}
   }
 
   .table-foot-note{
@@ -431,6 +444,51 @@
   }
   @keyframes floatPulse{ 0%,100%{transform:scale(1);} 50%{transform:scale(1.06);} }
 
+  /* floating social stack */
+  .float-toggle{
+    position:fixed; bottom:92px; right:31px; z-index:61;
+    width:44px; height:44px; border-radius:50%; border:1px solid var(--line);
+    background:var(--bg-panel-2); color:var(--text-primary);
+    display:flex; align-items:center; justify-content:center; cursor:pointer;
+    box-shadow:0 6px 18px rgba(0,0,0,0.35);
+    transition:transform .25s ease, background .2s ease, border-color .2s ease;
+  }
+  .float-toggle:hover{border-color:var(--gold); background:rgba(232,184,75,0.1);}
+  .float-toggle svg{transition:transform .25s ease;}
+  .float-toggle.open{transform:rotate(45deg); background:var(--gold); border-color:var(--gold); color:#181103;}
+
+  .float-social{
+    position:fixed; bottom:148px; right:31px; z-index:60;
+    display:flex; flex-direction:column; align-items:center; gap:12px;
+    pointer-events:none;
+  }
+  .float-social a{
+    width:44px; height:44px; border-radius:50%;
+    display:flex; align-items:center; justify-content:center; color:#fff;
+    box-shadow:0 6px 18px rgba(0,0,0,0.35);
+    opacity:0; transform:translateY(14px) scale(0.7);
+    transition:opacity .22s ease, transform .22s ease;
+    pointer-events:none;
+  }
+  .float-social.open a{opacity:1; transform:translateY(0) scale(1); pointer-events:auto;}
+  .float-social a:hover{transform:translateY(-3px) scale(1.06);}
+  .float-social.open a:nth-child(1){transition-delay:.03s;}
+  .float-social.open a:nth-child(2){transition-delay:.08s;}
+  .float-social.open a:nth-child(3){transition-delay:.13s;}
+  .float-social.open a:nth-child(4){transition-delay:.18s;}
+  .fs-discord{background:#5865F2;}
+  .fs-tiktok{background:#111219; position:relative;}
+  .fs-tiktok svg{position:relative; z-index:1;}
+  .fs-instagram{background:radial-gradient(circle at 30% 110%, #fdf497 0%, #fdf497 5%, #fd5949 45%, #d6249f 60%, #285AEB 90%);}
+  .fs-telegram{background:#229ED9;}
+
+  @media (max-width:480px){
+    .float-wa{width:52px; height:52px; bottom:18px; right:18px;}
+    .float-toggle{width:40px; height:40px; bottom:80px; right:22px;}
+    .float-social{bottom:130px; right:22px; gap:10px;}
+    .float-social a{width:40px; height:40px;}
+  }
+
   footer{border-top:1px solid var(--line); padding:36px 0; text-align:center; color:var(--text-dim); font-size:13px;}
   footer b{color:var(--text-muted);}
 
@@ -452,9 +510,9 @@
       <a onclick="gotoPage('home','testimoni')">Reviews</a>
     </div>
     <button class="nav-burger" id="navBurger" onclick="toggleMobileMenu()" aria-label="Toggle menu"><span></span></button>
-    <a href="https://wa.me/628217785931?text=Halo%2C%20saya%20mau%20tanya%20jasa%20joki" class="nav-cta" target="_blank" rel="noopener">
+    <a href="https://wa.me/628217785931?text=Hi%2C%20I%27d%20like%20to%20ask%20about%20your%20boosting%20service" class="nav-cta" target="_blank" rel="noopener">
       <span class="ic"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M17.5 14.4c-.3-.1-1.7-.8-1.9-.9-.3-.1-.5-.1-.6.1-.2.3-.7.9-.9 1.1-.2.2-.3.2-.6.1-.3-.1-1.3-.5-2.4-1.5-.9-.8-1.5-1.8-1.7-2.1-.2-.3 0-.5.1-.6.1-.1.3-.3.4-.5.1-.2.2-.3.3-.5.1-.2 0-.4 0-.5-.1-.1-.6-1.5-.8-2-.2-.5-.4-.4-.6-.4h-.5c-.2 0-.5.1-.7.3-.2.3-1 1-1 2.4s1 2.8 1.1 3c.1.2 2 3.1 4.9 4.3.7.3 1.2.5 1.6.6.7.2 1.3.2 1.8.1.5-.1 1.7-.7 2-1.4.2-.7.2-1.2.1-1.4-.1-.1-.3-.2-.5-.3z"/><path d="M12 2C6.5 2 2 6.5 2 12c0 1.8.5 3.6 1.4 5.1L2 22l5.1-1.3C8.5 21.6 10.2 22 12 22c5.5 0 10-4.5 10-10S17.5 2 12 2zm0 18c-1.6 0-3.1-.4-4.5-1.2l-.3-.2-3.2.8.9-3.1-.2-.3C3.8 14.6 3.3 13.3 3.3 12c0-4.8 3.9-8.7 8.7-8.7s8.7 3.9 8.7 8.7-3.9 8.7-8.7 8.7z"/></svg></span>
-      Chat Sekarang
+      Chat Now
     </a>
   </nav>
   <div class="mobile-menu" id="mobileMenu">
@@ -474,19 +532,19 @@
   <div class="wrap hero-grid">
     <div>
       <div class="eyebrow">Boost &amp; Carry Ranked Mobile Legends: Bang Bang</div>
-      <h1>Setiap match, satu langkah lebih dekat ke <span class="grad">Immortal.</span></h1>
-      <p class="sub">Global Hero, papan atas leaderboard, atau status Immortal — semua berawal dari satu push yang tepat. Tim joki profesional kami kerjakan cepat, aman, dan tanpa cheat, dengan laporan progress tiap sesi.</p>
+      <h1>Every match, one step closer to <span class="grad">Immortal.</span></h1>
+      <p class="sub">Global Hero, the top of the leaderboard, or Immortal status — it all starts with the right push. Our professional booster team works fast, safe, and cheat-free, with a progress report after every session.</p>
       <div class="hero-ctas">
-        <a href="https://wa.me/628217785931?text=Halo%2C%20saya%20mau%20order%20jasa%20joki" class="btn-primary" target="_blank" rel="noopener">
+        <a href="https://wa.me/628217785931?text=Hi%2C%20I%27d%20like%20to%20order%20a%20boosting%20service" class="btn-primary" target="_blank" rel="noopener">
           <svg width="17" height="17" viewBox="0 0 24 24" fill="currentColor"><path d="M17.5 14.4c-.3-.1-1.7-.8-1.9-.9-.3-.1-.5-.1-.6.1-.2.3-.7.9-.9 1.1-.2.2-.3.2-.6.1-.3-.1-1.3-.5-2.4-1.5-.9-.8-1.5-1.8-1.7-2.1-.2-.3 0-.5.1-.6.1-.1.3-.3.4-.5.1-.2.2-.3.3-.5.1-.2 0-.4 0-.5-.1-.1-.6-1.5-.8-2-.2-.5-.4-.4-.6-.4h-.5c-.2 0-.5.1-.7.3-.2.3-1 1-1 2.4s1 2.8 1.1 3c.1.2 2 3.1 4.9 4.3.7.3 1.2.5 1.6.6.7.2 1.3.2 1.8.1.5-.1 1.7-.7 2-1.4.2-.7.2-1.2.1-1.4-.1-.1-.3-.2-.5-.3z"/><path d="M12 2C6.5 2 2 6.5 2 12c0 1.8.5 3.6 1.4 5.1L2 22l5.1-1.3C8.5 21.6 10.2 22 12 22c5.5 0 10-4.5 10-10S17.5 2 12 2z"/></svg>
           Chat via WhatsApp
         </a>
-        <a onclick="gotoPage('home','layanan')" class="btn-ghost">Lihat Layanan Kami</a>
+        <a onclick="gotoPage('home','layanan')" class="btn-ghost">See Our Services</a>
       </div>
       <div class="trust-row">
         <div class="trust-item"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="var(--gold)" stroke-width="2"><path d="M12 2l3 6 7 1-5 5 1 7-6-3-6 3 1-7-5-5 7-1z"/></svg> No cheat, 100% manual</div>
-        <div class="trust-item"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="var(--gold)" stroke-width="2"><path d="M12 22s8-4 8-11V5l-8-3-8 3v6c0 7 8 11 8 11z"/></svg> Akun tetap aman</div>
-        <div class="trust-item"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="var(--gold)" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/></svg> Garansi selesai tepat waktu</div>
+        <div class="trust-item"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="var(--gold)" stroke-width="2"><path d="M12 22s8-4 8-11V5l-8-3-8 3v6c0 7 8 11 8 11z"/></svg> Your account stays safe</div>
+        <div class="trust-item"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="var(--gold)" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/></svg> On-time completion guarantee</div>
       </div>
     </div>
 
@@ -496,7 +554,7 @@
 
       <div class="hv-top">
         <span class="hv-tag">Hero of the Match</span>
-        <div class="hv-rank"><div class="lbl">Rank Saat Ini</div><div class="val">Mythical Glory</div></div>
+        <div class="hv-rank"><div class="lbl">Current Rank</div><div class="val">Mythical Glory</div></div>
       </div>
 
       <div class="hv-figure-wrap">
@@ -549,40 +607,40 @@
 
 <section class="stats">
   <div class="wrap stats-row">
-    <div class="stat"><div class="num">12.400+</div><div class="lbl">Akun berhasil di-push</div></div>
-    <div class="stat"><div class="num">4.9/5</div><div class="lbl">Rating dari 3.100 klien</div></div>
-    <div class="stat"><div class="num">≤ 15 mnt</div><div class="lbl">Rata-rata respon chat</div></div>
-    <div class="stat"><div class="num">0</div><div class="lbl">Kasus akun banned</div></div>
+    <div class="stat"><div class="num">12,400+</div><div class="lbl">Accounts successfully boosted</div></div>
+    <div class="stat"><div class="num">4.9/5</div><div class="lbl">Rating from 3,100 clients</div></div>
+    <div class="stat"><div class="num">≤ 15 min</div><div class="lbl">Average chat response time</div></div>
+    <div class="stat"><div class="num">0</div><div class="lbl">Accounts banned to date</div></div>
   </div>
 </section>
 
 <section class="block" id="kenapa">
   <div class="wrap">
     <div class="section-head">
-      <div class="eyebrow">Kenapa Pilih Kami</div>
-      <h2>Push rank tanpa drama.</h2>
-      <p>Kami tahu akun kamu berharga. Setiap sesi joki diawasi, dilaporkan, dan dikerjakan sesuai jam yang kamu tentukan sendiri.</p>
+      <div class="eyebrow">Why Choose Us</div>
+      <h2>Rank up, drama-free.</h2>
+      <p>We know your account matters. Every boosting session is monitored, reported, and scheduled around the hours you choose.</p>
     </div>
     <div class="why-grid">
       <div class="why-card">
         <div class="ic"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-11V5l-8-3-8 3v6c0 7 8 11 8 11z"/></svg></div>
-        <h3>Akun Aman</h3>
-        <p>Login lewat jaringan pribadi, tanpa aplikasi pihak ketiga atau cheat yang berisiko kena banned.</p>
+        <h3>Account Security</h3>
+        <p>Login via a private network, with no third-party apps or cheats that could risk a ban.</p>
       </div>
       <div class="why-card">
         <div class="ic"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 3v18h18"/><path d="M7 14l3-3 3 3 5-6"/></svg></div>
-        <h3>Laporan Real-time</h3>
-        <p>Screenshot progress dikirim tiap sesi selesai, lengkap dengan match history hari itu.</p>
+        <h3>Real-time Reports</h3>
+        <p>Progress screenshots are sent after every session, complete with that day's match history.</p>
       </div>
       <div class="why-card">
         <div class="ic"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/></svg></div>
-        <h3>Jadwal Fleksibel</h3>
-        <p>Kamu yang tentukan jam sesi joki jalan, cocok buat yang masih mau main sendiri juga.</p>
+        <h3>Flexible Scheduling</h3>
+        <p>You decide the session hours, so you can still hop on and play whenever you like.</p>
       </div>
       <div class="why-card">
         <div class="ic"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2l3 6 7 1-5 5 1 7-6-3-6 3 1-7-5-5 7-1z"/></svg></div>
-        <h3>Garansi Rank Turun</h3>
-        <p>Kalau rank turun dalam masa garansi karena kelalaian joki, kami push ulang gratis.</p>
+        <h3>Rank Drop Guarantee</h3>
+        <p>If your rank drops within the guarantee period due to booster error, we push it back up for free.</p>
       </div>
     </div>
   </div>
@@ -591,53 +649,56 @@
 <section class="block" id="layanan" style="border-top:1px solid var(--line); background:rgba(255,255,255,0.012);">
   <div class="wrap">
     <div class="section-head">
-      <div class="eyebrow">Layanan Kami</div>
-      <h2>Tiga layanan, satu tujuan: akun makin kece.</h2>
-      <p>Mau di-push-in penuh, main bareng joki, atau akun kamu lagi bermasalah? Pilih layanan yang sesuai kebutuhan kamu.</p>
+      <div class="eyebrow">Our Services</div>
+      <h2>Three services, one goal: a better account.</h2>
+      <p>Want your account fully piloted, want to play alongside a booster, or having trouble with your account? Pick the service that fits your needs.</p>
     </div>
     <div class="pkg-grid">
       <div class="pkg-card">
         <div class="pkg-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M13 2L3 14h7l-1 8 11-14h-7l1-6z"/></svg></div>
         <div class="pkg-route">Rank Boost</div>
-        <h3>Joki Ranked</h3>
-        <p class="pkg-desc">Akun kamu dipegang penuh oleh joki, dimainkan sampai target rank tercapai. Cocok buat yang sibuk tapi tetap mau rank naik.</p>
-        <div class="pkg-price">Mulai Rp7.000<sup>/star</sup></div>
-        <div class="pkg-note">Lihat rincian lengkap di Pricelist</div>
+        <h3>Ranked Boosting</h3>
+        <p class="pkg-desc">Your account is fully piloted by our booster and played until your target rank is reached. Perfect if you're busy but still want to climb.</p>
+        <div class="pkg-price">From S$0.50<sup>/star</sup></div>
+        <div class="pkg-price-alt"><span class="cur-pill myr">RM1.60/star</span><span class="cur-pill idr">Rp7,000/star</span></div>
+        <div class="pkg-note">See full pricing on the Pricelist page</div>
         <ul class="pkg-feats">
-          <li><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M20 6L9 17l-5-5"/></svg> Dikerjakan full oleh joki profesional</li>
-          <li><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M20 6L9 17l-5-5"/></svg> Free request hero</li>
-          <li><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M20 6L9 17l-5-5"/></svg> Jadwal sesi sesuai kesepakatan</li>
+          <li><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M20 6L9 17l-5-5"/></svg> Fully handled by a professional booster</li>
+          <li><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M20 6L9 17l-5-5"/></svg> Free hero requests</li>
+          <li><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M20 6L9 17l-5-5"/></svg> Session schedule by agreement</li>
         </ul>
-        <a href="https://wa.me/628217785931?text=Halo%2C%20saya%20mau%20order%20jasa%20Joki%20Ranked" class="pkg-btn" target="_blank" rel="noopener">Order Joki Ranked</a>
+        <a href="https://wa.me/628217785931?text=Hi%2C%20I%27d%20like%20to%20order%20Ranked%20Boosting" class="pkg-btn" target="_blank" rel="noopener">Order Ranked Boosting</a>
       </div>
       <div class="pkg-card featured">
-        <div class="pkg-tag">Paling Diminati</div>
+        <div class="pkg-tag">Most Popular</div>
         <div class="pkg-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="9" cy="7" r="3.2"/><circle cx="17" cy="7" r="2.6"/><path d="M3 21v-1.5C3 16.9 5.7 15 9 15s6 1.9 6 4.5V21"/><path d="M15.5 15.3c2.8.4 4.5 2.1 4.5 4.2V21"/></svg></div>
         <div class="pkg-route">Duo / Party Push</div>
         <h3>Carry Rank</h3>
-        <p class="pkg-desc">Joki main satu tim bareng kamu (duo/squad), kamu tetap pegang akun sendiri sambil di-carry sampai menang.</p>
-        <div class="pkg-price">Mulai Rp8.000<sup>/match</sup></div>
-        <div class="pkg-note">Lihat rincian lengkap di Pricelist</div>
+        <p class="pkg-desc">You join our professional booster team's party and get carried to victory together.</p>
+        <div class="pkg-price">From S$0.57<sup>/star</sup></div>
+        <div class="pkg-price-alt"><span class="cur-pill myr">RM1.85/star</span><span class="cur-pill idr">Rp8,000/star</span></div>
+        <div class="pkg-note">See full pricing on the Pricelist page</div>
         <ul class="pkg-feats">
-          <li><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M20 6L9 17l-5-5"/></svg> Main langsung bareng joki, akun tetap di tangan kamu</li>
-          <li><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M20 6L9 17l-5-5"/></svg> Rekomendasi role & pick tiap match</li>
-          <li><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M20 6L9 17l-5-5"/></svg> Bisa sambil ngobrol & belajar mabar</li>
+          <li><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M20 6L9 17l-5-5"/></svg> You join our pro team's party and get carried to victory</li>
+          <li><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M20 6L9 17l-5-5"/></svg> Role and pick recommendations every match</li>
+          <li><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M20 6L9 17l-5-5"/></svg> Chat and learn while you play</li>
         </ul>
-        <a href="https://wa.me/628217785931?text=Halo%2C%20saya%20mau%20order%20jasa%20Carry%20Rank" class="pkg-btn" target="_blank" rel="noopener">Order Carry Rank</a>
+        <a href="https://wa.me/628217785931?text=Hi%2C%20I%27d%20like%20to%20order%20Carry%20Rank" class="pkg-btn" target="_blank" rel="noopener">Order Carry Rank</a>
       </div>
       <div class="pkg-card">
         <div class="pkg-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="4" y="10" width="16" height="10" rx="2"/><path d="M8 10V7a4 4 0 018 0v3"/><path d="M12 14v3"/></svg></div>
         <div class="pkg-route">Account Recovery</div>
         <h3>Retrieve Account</h3>
-        <p class="pkg-desc">Bantu ambil alih kembali akun yang lupa email/password, kena hack, atau ke-lock, lewat proses verifikasi resmi.</p>
-        <div class="pkg-price">Mulai Rp50.000</div>
-        <div class="pkg-note">Harga final tergantung tingkat kesulitan</div>
+        <p class="pkg-desc">We help you regain access to an account with a forgotten email/password, a hack, or a lockout, through the official verification process.</p>
+        <div class="pkg-price">From S$3.60</div>
+        <div class="pkg-price-alt"><span class="cur-pill myr">RM11.50</span><span class="cur-pill idr">Rp50,000</span></div>
+        <div class="pkg-note">Final price depends on case difficulty</div>
         <ul class="pkg-feats">
-          <li><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M20 6L9 17l-5-5"/></svg> Bantu pemulihan lewat verifikasi resmi Moonton</li>
-          <li><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M20 6L9 17l-5-5"/></svg> Konsultasi kronologi kejadian dulu, gratis</li>
-          <li><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M20 6L9 17l-5-5"/></svg> Bayar setelah akun berhasil kembali</li>
+          <li><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M20 6L9 17l-5-5"/></svg> Recovery assistance via official Moonton verification</li>
+          <li><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M20 6L9 17l-5-5"/></svg> Free consultation on your case first</li>
+          <li><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M20 6L9 17l-5-5"/></svg> Pay only after your account is recovered</li>
         </ul>
-        <a href="https://wa.me/628217785931?text=Halo%2C%20saya%20mau%20order%20jasa%20Retrieve%20Account" class="pkg-btn" target="_blank" rel="noopener">Order Retrieve Account</a>
+        <a href="https://wa.me/628217785931?text=Hi%2C%20I%27d%20like%20to%20order%20Account%20Recovery" class="pkg-btn" target="_blank" rel="noopener">Order Retrieve Account</a>
       </div>
     </div>
   </div>
@@ -646,26 +707,26 @@
 <section class="block" id="proses">
   <div class="wrap">
     <div class="section-head">
-      <div class="eyebrow">Cara Kerja</div>
-      <h2>Empat langkah, tanpa ribet.</h2>
-      <p>Berlaku untuk ketiga layanan — Joki Ranked, Carry Rank, maupun Retrieve Account. Kamu bisa pantau tiap tahapnya.</p>
+      <div class="eyebrow">How It Works</div>
+      <h2>Four steps, no hassle.</h2>
+      <p>Applies to all three services — Ranked Boosting, Carry Rank, and Retrieve Account. You can track every stage.</p>
     </div>
     <div class="process-list">
       <div class="p-step">
-        <div class="p-num"><b>01</b>Pilih Layanan</div>
-        <div><h3>Chat & jelaskan kebutuhan kamu</h3><p>Sebutkan mau Joki Ranked, Carry Rank, atau Retrieve Account, lalu ceritakan situasi akun kamu lewat WhatsApp.</p></div>
+        <div class="p-num"><b>01</b>Choose a Service</div>
+        <div><h3>Chat & tell us what you need</h3><p>Let us know if it's Ranked Boosting, Carry Rank, or Retrieve Account, then share your account situation over WhatsApp.</p></div>
       </div>
       <div class="p-step">
-        <div class="p-num"><b>02</b>Konfirmasi</div>
-        <div><h3>Cek harga & atur jadwal</h3><p>Kami hitung biaya sesuai jenis layanan, lalu sepakati jam sesi atau proses verifikasi yang dibutuhkan.</p></div>
+        <div class="p-num"><b>02</b>Confirm</div>
+        <div><h3>Check pricing & set a schedule</h3><p>We calculate the cost based on the service type, then agree on session hours or the verification process needed.</p></div>
       </div>
       <div class="p-step">
-        <div class="p-num"><b>03</b>Proses Berjalan</div>
-        <div><h3>Joki mengerjakan sesuai layanan</h3><p>Push rank, main bareng, atau proses pemulihan akun dijalankan langsung oleh tim, tanpa cheat maupun bot.</p></div>
+        <div class="p-num"><b>03</b>Work in Progress</div>
+        <div><h3>Our booster handles the service</h3><p>Rank pushing, playing together, or account recovery is carried out directly by our team, with no cheats or bots.</p></div>
       </div>
       <div class="p-step">
-        <div class="p-num"><b>04</b>Laporan Akhir</div>
-        <div><h3>Terima hasil + rekap lengkap</h3><p>Setelah selesai, kamu dapat laporan progress lengkap. Untuk Retrieve Account, akun diserahkan kembali dengan password baru yang sudah diamankan atas nama kamu.</p></div>
+        <div class="p-num"><b>04</b>Final Report</div>
+        <div><h3>Receive your results + full recap</h3><p>Once finished, you get a complete progress report. For Retrieve Account, your account is handed back with a new, secured password under your name.</p></div>
       </div>
     </div>
   </div>
@@ -674,53 +735,53 @@
 <section class="block" id="testimoni" style="border-top:1px solid var(--line); background:rgba(255,255,255,0.012);">
   <div class="wrap">
     <div class="section-head">
-      <div class="eyebrow">Testimoni</div>
-      <h2>Kata mereka yang sudah naik rank.</h2>
+      <div class="eyebrow">Reviews</div>
+      <h2>What our ranked-up clients say.</h2>
     </div>
     <div class="testi-grid">
       <div class="testi-card">
         <div class="testi-stars">★★★★★</div>
-        <p>"Awalnya ragu banget kasih akun ke orang lain, takut kena banned. Tapi ternyata di-handle rapi, jokinya update progress tiap selesai match. Sekarang udah Mythic Glory, puas."</p>
+        <p>"I was really hesitant handing my account to someone else, worried about a ban. But it was handled properly, with progress updates after every match. I'm at Mythic Glory now — very happy."</p>
         <div class="testi-who"><div class="testi-avatar">A</div><div><div class="name">Aldi K.</div><div class="rank">Mythic Glory</div></div></div>
       </div>
       <div class="testi-card">
         <div class="testi-stars">★★★★★</div>
-        <p>"Udah coba jasa lain sebelumnya kapok parah, akun malah turun rank. Disini beda, komunikasinya enak dan ga php dari awal nego sampe selesai."</p>
+        <p>"I'd tried another service before and it was a disaster — my rank actually dropped. This was different, great communication from the first chat to the end."</p>
         <div class="testi-who"><div class="testi-avatar">V</div><div><div class="name">Vina T.</div><div class="rank">Mythic Honor</div></div></div>
       </div>
       <div class="testi-card">
         <div class="testi-stars">★★★★★</div>
-        <p>"Yang bikin nyaman itu win rate-nya konsisten, bukan asal push doang. Dari Legend low ampe Mythic Immortal cuma butuh beberapa hari."</p>
+        <p>"What I liked most was the consistent winrate, not just a reckless push. Went from low Legend to Mythic Immortal in just a few days."</p>
         <div class="testi-who"><div class="testi-avatar">F</div><div><div class="name">Fikri A.</div><div class="rank">Mythic Immortal</div></div></div>
       </div>
       <div class="testi-card">
         <div class="testi-stars">★★★★★</div>
-        <p>"Harga sesuai lah sama effort push rank sendiri yang bikin darah tinggi. Worth banget buat yang kerja/kuliah ga sempet grind."</p>
+        <p>"Worth every cent compared to the stress of grinding it out myself. Perfect for anyone working or studying with no time to grind."</p>
         <div class="testi-who"><div class="testi-avatar">N</div><div><div class="name">Nadia S.</div><div class="rank">Mythic Glory</div></div></div>
       </div>
       <div class="testi-card">
         <div class="testi-stars">★★★★★</div>
-        <p>"Server lagi rame-ramenya pas order, tapi tetep on time sesuai estimasi. Respon chat juga cepet ga php."</p>
+        <p>"Servers were packed when I ordered, but it still finished on the estimated time. Chat response was also quick, no runaround."</p>
         <div class="testi-who"><div class="testi-avatar">B</div><div><div class="name">Bayu R.</div><div class="rank">Mythic Honor</div></div></div>
       </div>
       <div class="testi-card">
         <div class="testi-stars">★★★★★</div>
-        <p>"Gila sih progress report-nya detail, tiap match dikasih tau menang kalah plus hero yang dipake. Transparan banget."</p>
+        <p>"The progress reports were surprisingly detailed — win/loss and hero used for every match. Very transparent."</p>
         <div class="testi-who"><div class="testi-avatar">P</div><div><div class="name">Putri L.</div><div class="rank">Mythic Honor</div></div></div>
       </div>
       <div class="testi-card">
         <div class="testi-stars">★★★★★</div>
-        <p>"Sempet parno akun kena report sistem karena win rate ngebut, ternyata aman aja sampe sekarang. Mantap."</p>
+        <p>"I was worried the system might flag my account for a sudden winrate spike, but it's been safe the whole time. Great service."</p>
         <div class="testi-who"><div class="testi-avatar">R</div><div><div class="name">Reza F.</div><div class="rank">Mythic Immortal</div></div></div>
       </div>
       <div class="testi-card">
         <div class="testi-stars">★★★★★</div>
-        <p>"Ini order kedua gw, yang pertama sukses jadi langsung repeat. Konsisten kualitasnya."</p>
+        <p>"This was my second order — the first went so well I came right back. Consistent quality every time."</p>
         <div class="testi-who"><div class="testi-avatar">S</div><div><div class="name">Sinta W.</div><div class="rank">Mythic Honor</div></div></div>
       </div>
       <div class="testi-card">
         <div class="testi-stars">★★★★★</div>
-        <p>"Mepet banget waktu itu soalnya mau season end, eh dikebut malah selesai lebih cepet dari estimasi."</p>
+        <p>"Cut it close since season end was near, but they sped things up and finished even faster than expected."</p>
         <div class="testi-who"><div class="testi-avatar">D</div><div><div class="name">Doni R.</div><div class="rank">Mythic Glory</div></div></div>
       </div>
     </div>
@@ -731,11 +792,11 @@
   <div class="wrap">
     <div class="contact-panel">
       <div>
-        <h2>Siap naik rank sekarang?</h2>
-        <p>Chat langsung, ceritakan target rank kamu, dan biarkan tim kami yang bawa akun ke level berikutnya.</p>
+        <h2>Ready to rank up now?</h2>
+        <p>Chat with us directly, tell us your target rank, and let our team take your account to the next level.</p>
       </div>
       <div class="contact-box">
-        <div class="lbl">Hubungi via WhatsApp</div>
+        <div class="lbl">Contact us on WhatsApp</div>
         <div class="num">0821-7785-931</div>
         <div class="contact-methods">
           <a class="cmethod wa" href="https://wa.me/628217785931" target="_blank" rel="noopener">
@@ -745,6 +806,18 @@
           <a class="cmethod" href="mailto:ascenramlbb@gmail.com">
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16v16H4z"/><path d="M22 6l-10 7L2 6"/></svg>
             ascenramlbb@gmail.com
+          </a>
+          <a class="cmethod" href="https://discord.gg/FzBpcGC3C" target="_blank" rel="noopener">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M20.3 5.4A18 18 0 0 0 15.9 4c-.2.4-.4.8-.6 1.3a16.6 16.6 0 0 0-4.7 0c-.2-.5-.4-.9-.6-1.3-1.5.3-3 .8-4.4 1.4C2.9 9 2.2 12.5 2.5 16c1.7 1.3 3.4 2 5 2.5.4-.6.8-1.2 1.1-1.9-.6-.2-1.2-.5-1.7-.9l.4-.3c3.3 1.6 6.9 1.6 10.2 0l.4.3c-.5.4-1.1.7-1.7.9.3.7.7 1.3 1.1 1.9 1.6-.5 3.3-1.2 5-2.5.4-4-.6-7.5-2-10.6zM9.7 13.9c-1 0-1.8-.9-1.8-2s.8-2 1.8-2 1.8.9 1.8 2-.8 2-1.8 2zm4.6 0c-1 0-1.8-.9-1.8-2s.8-2 1.8-2 1.8.9 1.8 2-.8 2-1.8 2z"/></svg>
+            Discord Server
+          </a>
+          <a class="cmethod" href="https://tiktok.com/@ascenra.mlbb" target="_blank" rel="noopener">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M16.6 5.8c-.9-.9-1.4-2-1.5-3.3h-3.2v13.6c0 1.5-1.2 2.7-2.7 2.7-1.5 0-2.7-1.2-2.7-2.7s1.2-2.7 2.7-2.7c.3 0 .6.05.9.14V10.3c-.3-.04-.6-.07-.9-.07-3.2 0-5.8 2.6-5.8 5.8S6 21.8 9.2 21.8s5.8-2.6 5.8-5.8V9.1a9 9 0 0 0 5 1.5V7.4c-1.2 0-2.4-.5-3.4-1.6z"/></svg>
+            @ascenra.mlbb
+          </a>
+          <a class="cmethod" href="https://t.me/ascenraMLBB" target="_blank" rel="noopener">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M21.9 4.3 18.6 20c-.2 1-.9 1.3-1.7.8l-4.7-3.5-2.3 2.2c-.3.3-.5.5-1 .5l.3-4.9 8.9-8c.4-.3-.1-.5-.6-.2L6.6 13 1.9 11.5c-1-.3-1-1 .2-1.5L20.6 3c.9-.3 1.6.2 1.3 1.3z"/></svg>
+            @ascenraMLBB
           </a>
           <a class="cmethod" href="https://instagram.com/ascenra.mlbb" target="_blank" rel="noopener">
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1"/></svg>
@@ -766,7 +839,7 @@
 <section class="page-head">
   <div class="wrap">
     <div class="eyebrow">Pricelist</div>
-    <p>Semakin tinggi kamu ingin melangkah, semakin keras medannya. Berikut rincian biaya Joki Ranked dan Carry Rank, dari Epic hingga Mythic Immortal.</p>
+    <p>The higher you want to climb, the tougher the terrain. Here's the full pricing for Ranked Boosting and Carry Rank, from Epic to Mythic Immortal.</p>
   </div>
 </section>
 
@@ -774,50 +847,54 @@
   <div class="wrap">
     <div class="section-head">
       <div class="section-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M13 2L3 14h7l-1 8 11-14h-7l1-6z"/></svg></div>
-      <h2>Joki Ranked — harga per star</h2>
-      <p>Akun dipegang penuh oleh joki sampai tier & star target tercapai. Harga dihitung per star di masing-masing tier.</p>
+      <h2>Ranked Boosting — price per star</h2>
+      <p>Your account is fully piloted by our booster until the target tier & star is reached. Priced per star for each tier.</p>
     </div>
 
     <table class="price-table">
       <thead>
-        <tr><th>Tier</th><th></th><th>Harga</th></tr>
+        <tr><th>Tier</th><th></th><th>Price</th></tr>
       </thead>
       <tbody>
         <tr>
           <td><div class="tier-cell"><span class="tier-dot" style="background:#8891b0"></span><div class="tier-name">Epic</div></div></td>
           <td></td>
-          <td class="price-cell">Rp7.000<sup>/star</sup></td>
+          <td class="price-cell"><div class="price-main">S$0.50<sup>/star</sup></div><div class="price-alt"><span class="cur-pill myr">RM1.60</span><span class="cur-pill idr">Rp7,000</span></div></td>
         </tr>
         <tr>
           <td><div class="tier-cell"><span class="tier-dot" style="background:#8f7bff"></span><div class="tier-name">Legend</div></div></td>
           <td></td>
-          <td class="price-cell">Rp8.000<sup>/star</sup></td>
+          <td class="price-cell"><div class="price-main">S$0.57<sup>/star</sup></div><div class="price-alt"><span class="cur-pill myr">RM1.85</span><span class="cur-pill idr">Rp8,000</span></div></td>
         </tr>
         <tr class="hot">
-          <td><div class="tier-cell"><span class="tier-dot" style="background:#e8b84b"></span><div class="tier-name">Mythic <span class="badge-popular">Terlaris</span></div></div></td>
+          <td><div class="tier-cell"><span class="tier-dot" style="background:#e8b84b"></span><div class="tier-name">Mythic <span class="badge-popular">Best Seller</span></div></div></td>
           <td></td>
-          <td class="price-cell">Rp10.000<sup>/star</sup></td>
+          <td class="price-cell"><div class="price-main">S$0.72<sup>/star</sup></div><div class="price-alt"><span class="cur-pill myr">RM2.30</span><span class="cur-pill idr">Rp10,000</span></div></td>
         </tr>
         <tr>
           <td><div class="tier-cell"><span class="tier-dot" style="background:#e8b84b"></span><div class="tier-name">Mythic Honor</div></div></td>
           <td></td>
-          <td class="price-cell">Rp12.500<sup>/star</sup></td>
+          <td class="price-cell"><div class="price-main">S$0.86<sup>/star</sup></div><div class="price-alt"><span class="cur-pill myr">RM2.75</span><span class="cur-pill idr">Rp12,000</span></div></td>
         </tr>
         <tr>
           <td><div class="tier-cell"><span class="tier-dot" style="background:#f3d68a"></span><div class="tier-name">Mythic Glory</div></div></td>
           <td></td>
-          <td class="price-cell">Rp16.000<sup>/star</sup></td>
+          <td class="price-cell"><div class="price-main">S$1.08<sup>/star</sup></div><div class="price-alt"><span class="cur-pill myr">RM3.45</span><span class="cur-pill idr">Rp15,000</span></div></td>
         </tr>
         <tr>
           <td><div class="tier-cell"><span class="tier-dot" style="background:#f3d68a"></span><div class="tier-name">Mythic Immortal</div></div></td>
           <td></td>
-          <td class="price-cell">Rp22.000<sup>/star</sup></td>
+          <td class="price-cell"><div class="price-main">S$1.29<sup>/star</sup></div><div class="price-alt"><span class="cur-pill myr">RM4.15</span><span class="cur-pill idr">Rp18,000</span></div></td>
         </tr>
       </tbody>
     </table>
+    <div class="table-foot-note">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 16v-5"/><circle cx="12" cy="8" r="0.5" fill="currentColor"/></svg>
+      SGD & MYR prices are estimates based on current exchange rates. Final price is confirmed in IDR (Rp) via WhatsApp.
+    </div>
 
     <div class="table-cta">
-      <a href="https://wa.me/628217785931?text=Halo%2C%20saya%20mau%20tanya%20harga%20Joki%20Ranked" class="btn-primary" target="_blank" rel="noopener">Tanya Harga Joki Ranked</a>
+      <a href="https://wa.me/628217785931?text=Hi%2C%20I%27d%20like%20to%20ask%20about%20Ranked%20Boosting%20pricing" class="btn-primary" target="_blank" rel="noopener">Ask About Ranked Boosting Pricing</a>
     </div>
   </div>
 </section>
@@ -826,50 +903,54 @@
   <div class="wrap">
     <div class="section-head">
       <div class="section-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="9" cy="7" r="3.2"/><circle cx="17" cy="7" r="2.6"/><path d="M3 21v-1.5C3 16.9 5.7 15 9 15s6 1.9 6 4.5V21"/><path d="M15.5 15.3c2.8.4 4.5 2.1 4.5 4.2V21"/></svg></div>
-      <h2>Carry Rank — harga per match</h2>
-      <p>Joki main satu tim bareng kamu, akun tetap di tangan kamu sendiri. Harga dihitung per match sesuai tier tempat kamu berada sekarang.</p>
+      <h2>Carry Rank — price per star</h2>
+      <p>You join our professional booster team's party and get carried to victory together. Priced per star, based on your current tier.</p>
     </div>
 
     <table class="price-table">
       <thead>
-        <tr><th>Tier</th><th></th><th>Harga</th></tr>
+        <tr><th>Tier</th><th></th><th>Price</th></tr>
       </thead>
       <tbody>
         <tr>
           <td><div class="tier-cell"><span class="tier-dot" style="background:#8891b0"></span><div class="tier-name">Epic</div></div></td>
           <td></td>
-          <td class="price-cell">Rp8.000<sup>/match</sup></td>
+          <td class="price-cell"><div class="price-main">S$0.57<sup>/star</sup></div><div class="price-alt"><span class="cur-pill myr">RM1.85</span><span class="cur-pill idr">Rp8,000</span></div></td>
         </tr>
         <tr>
           <td><div class="tier-cell"><span class="tier-dot" style="background:#8f7bff"></span><div class="tier-name">Legend</div></div></td>
           <td></td>
-          <td class="price-cell">Rp9.500<sup>/match</sup></td>
+          <td class="price-cell"><div class="price-main">S$0.65<sup>/star</sup></div><div class="price-alt"><span class="cur-pill myr">RM2.05</span><span class="cur-pill idr">Rp9,000</span></div></td>
         </tr>
         <tr class="hot">
-          <td><div class="tier-cell"><span class="tier-dot" style="background:#e8b84b"></span><div class="tier-name">Mythic <span class="badge-popular">Terlaris</span></div></div></td>
+          <td><div class="tier-cell"><span class="tier-dot" style="background:#e8b84b"></span><div class="tier-name">Mythic <span class="badge-popular">Best Seller</span></div></div></td>
           <td></td>
-          <td class="price-cell">Rp11.000<sup>/match</sup></td>
+          <td class="price-cell"><div class="price-main">S$0.86<sup>/star</sup></div><div class="price-alt"><span class="cur-pill myr">RM2.75</span><span class="cur-pill idr">Rp12,000</span></div></td>
         </tr>
         <tr>
           <td><div class="tier-cell"><span class="tier-dot" style="background:#e8b84b"></span><div class="tier-name">Mythic Honor</div></div></td>
           <td></td>
-          <td class="price-cell">Rp13.500<sup>/match</sup></td>
+          <td class="price-cell"><div class="price-main">S$1.08<sup>/star</sup></div><div class="price-alt"><span class="cur-pill myr">RM3.45</span><span class="cur-pill idr">Rp15,000</span></div></td>
         </tr>
         <tr>
           <td><div class="tier-cell"><span class="tier-dot" style="background:#f3d68a"></span><div class="tier-name">Mythic Glory</div></div></td>
           <td></td>
-          <td class="price-cell">Rp17.000<sup>/match</sup></td>
+          <td class="price-cell"><div class="price-main">S$1.29<sup>/star</sup></div><div class="price-alt"><span class="cur-pill myr">RM4.15</span><span class="cur-pill idr">Rp18,000</span></div></td>
         </tr>
         <tr>
           <td><div class="tier-cell"><span class="tier-dot" style="background:#f3d68a"></span><div class="tier-name">Mythic Immortal</div></div></td>
           <td></td>
-          <td class="price-cell">Rp24.000<sup>/match</sup></td>
+          <td class="price-cell"><div class="price-main">S$1.43<sup>/star</sup></div><div class="price-alt"><span class="cur-pill myr">RM4.60</span><span class="cur-pill idr">Rp20,000</span></div></td>
         </tr>
       </tbody>
     </table>
+    <div class="table-foot-note">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 16v-5"/><circle cx="12" cy="8" r="0.5" fill="currentColor"/></svg>
+      SGD & MYR prices are estimates based on current exchange rates. Final price is confirmed in IDR (Rp) via WhatsApp.
+    </div>
 
     <div class="table-cta">
-      <a href="https://wa.me/628217785931?text=Halo%2C%20saya%20mau%20tanya%20harga%20Carry%20Rank" class="btn-primary" target="_blank" rel="noopener">Tanya Harga Carry Rank</a>
+      <a href="https://wa.me/628217785931?text=Hi%2C%20I%27d%20like%20to%20ask%20about%20Carry%20Rank%20pricing" class="btn-primary" target="_blank" rel="noopener">Ask About Carry Rank Pricing</a>
     </div>
   </div>
 </section>
@@ -878,10 +959,10 @@
   <div class="wrap">
     <div class="contact-strip">
       <div>
-        <h3>Konsultasi harga sebelum order.</h3>
-        <p>Kirim screenshot rank kamu, tim kami hitungkan estimasi harga dan waktu pengerjaan saat itu juga.</p>
+        <h3>Get a price check before you order.</h3>
+        <p>Send us a screenshot of your rank and our team will estimate the price and completion time right away.</p>
       </div>
-      <a href="https://wa.me/628217785931?text=Halo%2C%20saya%20mau%20konsultasi%20harga%20joki" class="btn-primary" target="_blank" rel="noopener">Konsultasi Gratis</a>
+      <a href="https://wa.me/628217785931?text=Hi%2C%20I%27d%20like%20a%20free%20price%20consultation" class="btn-primary" target="_blank" rel="noopener">Free Consultation</a>
     </div>
   </div>
 </section>
@@ -955,7 +1036,7 @@
     </div>
 
     <div class="table-cta" style="margin-top:32px;">
-      <a href="https://wa.me/628217785931?text=Halo%2C%20saya%20mau%20push%20rank" class="btn-primary" target="_blank" rel="noopener">Chat on WhatsApp to Push Rank</a>
+      <a href="https://wa.me/628217785931?text=Hi%2C%20I%27d%20like%20to%20push%20my%20rank" class="btn-primary" target="_blank" rel="noopener">Chat on WhatsApp to Push Rank</a>
     </div>
   </div>
 </section>
@@ -964,9 +1045,26 @@
 <!-- ======================= /PAGE: WINRATE ======================= -->
 
 <footer>
-  <div class="wrap">© 2026 <b>ASCENRA</b> — Layanan joki rank independen, tidak berafiliasi dengan Moonton.</div>
+  <div class="wrap">© 2026 <b>ASCENRA</b> — Independent rank boosting service, not affiliated with Moonton.</div>
 </footer>
 
+<div class="float-social" id="floatSocial">
+  <a class="fs-discord" href="https://discord.gg/FzBpcGC3C" target="_blank" rel="noopener" aria-label="Join Discord">
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M20.3 5.4A18 18 0 0 0 15.9 4c-.2.4-.4.8-.6 1.3a16.6 16.6 0 0 0-4.7 0c-.2-.5-.4-.9-.6-1.3-1.5.3-3 .8-4.4 1.4C2.9 9 2.2 12.5 2.5 16c1.7 1.3 3.4 2 5 2.5.4-.6.8-1.2 1.1-1.9-.6-.2-1.2-.5-1.7-.9l.4-.3c3.3 1.6 6.9 1.6 10.2 0l.4.3c-.5.4-1.1.7-1.7.9.3.7.7 1.3 1.1 1.9 1.6-.5 3.3-1.2 5-2.5.4-4-.6-7.5-2-10.6zM9.7 13.9c-1 0-1.8-.9-1.8-2s.8-2 1.8-2 1.8.9 1.8 2-.8 2-1.8 2zm4.6 0c-1 0-1.8-.9-1.8-2s.8-2 1.8-2 1.8.9 1.8 2-.8 2-1.8 2z"/></svg>
+  </a>
+  <a class="fs-tiktok" href="https://tiktok.com/@ascenra.mlbb" target="_blank" rel="noopener" aria-label="TikTok">
+    <svg width="19" height="19" viewBox="0 0 24 24" fill="currentColor"><path d="M16.6 5.8c-.9-.9-1.4-2-1.5-3.3h-3.2v13.6c0 1.5-1.2 2.7-2.7 2.7-1.5 0-2.7-1.2-2.7-2.7s1.2-2.7 2.7-2.7c.3 0 .6.05.9.14V10.3c-.3-.04-.6-.07-.9-.07-3.2 0-5.8 2.6-5.8 5.8S6 21.8 9.2 21.8s5.8-2.6 5.8-5.8V9.1a9 9 0 0 0 5 1.5V7.4c-1.2 0-2.4-.5-3.4-1.6z"/></svg>
+  </a>
+  <a class="fs-instagram" href="https://instagram.com/ascenra.mlbb" target="_blank" rel="noopener" aria-label="Instagram">
+    <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="5.5"/><circle cx="12" cy="12" r="4.2"/><circle cx="17.6" cy="6.4" r="1.1" fill="currentColor" stroke="none"/></svg>
+  </a>
+  <a class="fs-telegram" href="https://t.me/ascenraMLBB" target="_blank" rel="noopener" aria-label="Telegram">
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M21.9 4.3 18.6 20c-.2 1-.9 1.3-1.7.8l-4.7-3.5-2.3 2.2c-.3.3-.5.5-1 .5l.3-4.9 8.9-8c.4-.3-.1-.5-.6-.2L6.6 13 1.9 11.5c-1-.3-1-1 .2-1.5L20.6 3c.9-.3 1.6.2 1.3 1.3z"/></svg>
+  </a>
+</div>
+<button class="float-toggle" id="floatToggle" aria-label="More ways to contact us" aria-expanded="false">
+  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>
+</button>
 <a class="float-wa" href="https://wa.me/628217785931" target="_blank" rel="noopener" aria-label="Chat WhatsApp">
   <svg width="26" height="26" viewBox="0 0 24 24" fill="currentColor"><path d="M17.5 14.4c-.3-.1-1.7-.8-1.9-.9-.3-.1-.5-.1-.6.1-.2.3-.7.9-.9 1.1-.2.2-.3.2-.6.1-.3-.1-1.3-.5-2.4-1.5-.9-.8-1.5-1.8-1.7-2.1-.2-.3 0-.5.1-.6.1-.1.3-.3.4-.5.1-.2.2-.3.3-.5.1-.2 0-.4 0-.5-.1-.1-.6-1.5-.8-2-.2-.5-.4-.4-.6-.4h-.5c-.2 0-.5.1-.7.3-.2.3-1 1-1 2.4s1 2.8 1.1 3c.1.2 2 3.1 4.9 4.3.7.3 1.2.5 1.6.6.7.2 1.3.2 1.8.1.5-.1 1.7-.7 2-1.4.2-.7.2-1.2.1-1.4-.1-.1-.3-.2-.5-.3z"/><path d="M12 2C6.5 2 2 6.5 2 12c0 1.8.5 3.6 1.4 5.1L2 22l5.1-1.3C8.5 21.6 10.2 22 12 22c5.5 0 10-4.5 10-10S17.5 2 12 2z"/></svg>
 </a>
@@ -983,6 +1081,25 @@
     burger.classList.toggle('open');
     menu.classList.toggle('open');
   }
+
+  // ---- Floating social bubbles ----
+  (function(){
+    var toggle = document.getElementById('floatToggle');
+    var social = document.getElementById('floatSocial');
+    if(!toggle || !social) return;
+    toggle.addEventListener('click', function(){
+      var open = social.classList.toggle('open');
+      toggle.classList.toggle('open', open);
+      toggle.setAttribute('aria-expanded', open ? 'true' : 'false');
+    });
+    document.addEventListener('click', function(e){
+      if(!social.contains(e.target) && e.target !== toggle && !toggle.contains(e.target)){
+        social.classList.remove('open');
+        toggle.classList.remove('open');
+        toggle.setAttribute('aria-expanded', 'false');
+      }
+    });
+  })();
 
   function gotoPage(page, sectionId){
     var home = document.getElementById('page-home');
