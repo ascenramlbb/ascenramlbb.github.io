@@ -433,6 +433,35 @@
   .contact-strip h3{font-family:'Rajdhani',sans-serif; font-weight:700; font-size:22px; margin-bottom:6px;}
   .contact-strip p{color:var(--text-muted); font-size:14px;}
 
+  /* order calculator */
+  .order-box{
+    background:linear-gradient(135deg, var(--bg-panel), var(--bg-panel-2));
+    border:1px solid var(--line); border-radius:20px; padding:36px 40px; margin-top:56px;
+  }
+  .order-box .section-head{margin-bottom:26px;}
+  .order-grid{display:grid; grid-template-columns:1fr 1fr; gap:18px;}
+  .order-field{display:flex; flex-direction:column; gap:7px;}
+  .order-field label{font-size:12.5px; font-weight:600; color:var(--text-muted); text-transform:uppercase; letter-spacing:0.04em;}
+  .order-field select, .order-field input{
+    background:var(--bg-base); border:1px solid var(--line); border-radius:10px;
+    padding:12px 14px; color:var(--text-primary); font-family:'Plus Jakarta Sans',sans-serif;
+    font-size:14.5px; outline:none; transition:border-color .2s ease;
+  }
+  .order-field select:focus, .order-field input:focus{border-color:var(--gold);}
+  .order-summary{
+    margin-top:26px; border-top:1px solid var(--line); padding-top:24px;
+    display:flex; align-items:center; justify-content:space-between; gap:20px; flex-wrap:wrap;
+  }
+  .order-total-lbl{font-size:12.5px; color:var(--text-muted); text-transform:uppercase; letter-spacing:0.04em; margin-bottom:4px;}
+  .order-total-main{font-family:'Rajdhani',sans-serif; font-weight:700; font-size:30px; color:var(--gold-soft); line-height:1.1;}
+  .order-total-alt{display:flex; gap:8px; margin-top:8px; flex-wrap:wrap;}
+  .order-recap{font-size:13px; color:var(--text-dim); margin-top:10px;}
+  @media (max-width:640px){
+    .order-box{padding:26px 22px;}
+    .order-grid{grid-template-columns:1fr;}
+    .order-total-main{font-size:25px;}
+  }
+
   /* floating WA */
   .float-wa{
     position:fixed; bottom:24px; right:24px; z-index:60;
@@ -510,9 +539,9 @@
       <a onclick="gotoPage('home','testimoni')">Reviews</a>
     </div>
     <button class="nav-burger" id="navBurger" onclick="toggleMobileMenu()" aria-label="Toggle menu"><span></span></button>
-    <a href="https://wa.me/628217785931?text=Hi%2C%20I%27d%20like%20to%20ask%20about%20your%20boosting%20service" class="nav-cta" target="_blank" rel="noopener">
-      <span class="ic"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M17.5 14.4c-.3-.1-1.7-.8-1.9-.9-.3-.1-.5-.1-.6.1-.2.3-.7.9-.9 1.1-.2.2-.3.2-.6.1-.3-.1-1.3-.5-2.4-1.5-.9-.8-1.5-1.8-1.7-2.1-.2-.3 0-.5.1-.6.1-.1.3-.3.4-.5.1-.2.2-.3.3-.5.1-.2 0-.4 0-.5-.1-.1-.6-1.5-.8-2-.2-.5-.4-.4-.6-.4h-.5c-.2 0-.5.1-.7.3-.2.3-1 1-1 2.4s1 2.8 1.1 3c.1.2 2 3.1 4.9 4.3.7.3 1.2.5 1.6.6.7.2 1.3.2 1.8.1.5-.1 1.7-.7 2-1.4.2-.7.2-1.2.1-1.4-.1-.1-.3-.2-.5-.3z"/><path d="M12 2C6.5 2 2 6.5 2 12c0 1.8.5 3.6 1.4 5.1L2 22l5.1-1.3C8.5 21.6 10.2 22 12 22c5.5 0 10-4.5 10-10S17.5 2 12 2zm0 18c-1.6 0-3.1-.4-4.5-1.2l-.3-.2-3.2.8.9-3.1-.2-.3C3.8 14.6 3.3 13.3 3.3 12c0-4.8 3.9-8.7 8.7-8.7s8.7 3.9 8.7 8.7-3.9 8.7-8.7 8.7z"/></svg></span>
-      Chat Now
+    <a id="nav-order-cta" onclick="gotoPage('order')" class="nav-cta">
+      <span class="ic"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M13 2L3 14h7l-1 8 11-14h-7l1-6z"/></svg></span>
+      Order Now
     </a>
   </nav>
   <div class="mobile-menu" id="mobileMenu">
@@ -535,11 +564,14 @@
       <h1>Every match, one step closer to <span class="grad">Immortal.</span></h1>
       <p class="sub">Global Hero, the top of the leaderboard, or Immortal status — it all starts with the right push. Our professional booster team works fast, safe, and cheat-free, with a progress report after every session.</p>
       <div class="hero-ctas">
-        <a href="https://wa.me/628217785931?text=Hi%2C%20I%27d%20like%20to%20order%20a%20boosting%20service" class="btn-primary" target="_blank" rel="noopener">
+        <a onclick="gotoPage('order')" class="btn-primary">
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M13 2L3 14h7l-1 8 11-14h-7l1-6z"/></svg>
+          Order Now
+        </a>
+        <a href="https://wa.me/628217785931?text=Hi%2C%20I%27d%20like%20to%20order%20a%20boosting%20service" class="btn-ghost" target="_blank" rel="noopener">
           <svg width="17" height="17" viewBox="0 0 24 24" fill="currentColor"><path d="M17.5 14.4c-.3-.1-1.7-.8-1.9-.9-.3-.1-.5-.1-.6.1-.2.3-.7.9-.9 1.1-.2.2-.3.2-.6.1-.3-.1-1.3-.5-2.4-1.5-.9-.8-1.5-1.8-1.7-2.1-.2-.3 0-.5.1-.6.1-.1.3-.3.4-.5.1-.2.2-.3.3-.5.1-.2 0-.4 0-.5-.1-.1-.6-1.5-.8-2-.2-.5-.4-.4-.6-.4h-.5c-.2 0-.5.1-.7.3-.2.3-1 1-1 2.4s1 2.8 1.1 3c.1.2 2 3.1 4.9 4.3.7.3 1.2.5 1.6.6.7.2 1.3.2 1.8.1.5-.1 1.7-.7 2-1.4.2-.7.2-1.2.1-1.4-.1-.1-.3-.2-.5-.3z"/><path d="M12 2C6.5 2 2 6.5 2 12c0 1.8.5 3.6 1.4 5.1L2 22l5.1-1.3C8.5 21.6 10.2 22 12 22c5.5 0 10-4.5 10-10S17.5 2 12 2z"/></svg>
           Chat via WhatsApp
         </a>
-        <a onclick="gotoPage('home','layanan')" class="btn-ghost">See Our Services</a>
       </div>
       <div class="trust-row">
         <div class="trust-item"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="var(--gold)" stroke-width="2"><path d="M12 2l3 6 7 1-5 5 1 7-6-3-6 3 1-7-5-5 7-1z"/></svg> No cheat, 100% manual</div>
@@ -971,6 +1003,86 @@
 <!-- ======================= /PAGE: PRICELIST ======================= -->
 
 
+<!-- ======================= PAGE: ORDER ======================= -->
+<div id="page-order" style="display:none;">
+
+<section class="page-head">
+  <div class="wrap">
+    <div class="eyebrow">Order Now</div>
+    <p>Pick your service, tier, and how many stars you need. Your total updates live, and one tap sends the full order straight to our WhatsApp.</p>
+  </div>
+</section>
+
+<section class="block">
+  <div class="wrap">
+    <div class="order-box">
+      <div class="section-head" style="text-align:left;">
+        <div class="section-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M13 2L3 14h7l-1 8 11-14h-7l1-6z"/></svg></div>
+        <h2 style="font-size:26px;">Build your order & send it straight to WhatsApp.</h2>
+        <p style="max-width:100%;">Pick a service, tier, and how many stars — the total updates live. Tap the button and the order details go straight to our WhatsApp chat.</p>
+      </div>
+
+      <div class="order-grid">
+        <div class="order-field">
+          <label for="ordService">Service</label>
+          <select id="ordService">
+            <option value="boost">Ranked Boosting (piloted)</option>
+            <option value="carry">Carry Rank (play together)</option>
+          </select>
+        </div>
+        <div class="order-field">
+          <label for="ordTier">Tier</label>
+          <select id="ordTier">
+            <option value="epic">Epic</option>
+            <option value="legend">Legend</option>
+            <option value="mythic">Mythic</option>
+            <option value="honor">Mythic Honor</option>
+            <option value="glory">Mythic Glory</option>
+            <option value="immortal">Mythic Immortal</option>
+          </select>
+        </div>
+        <div class="order-field">
+          <label for="ordStars">Number of Stars</label>
+          <input type="number" id="ordStars" value="10" min="1" max="500">
+        </div>
+        <div class="order-field">
+          <label for="ordName">Your In-Game Name (optional)</label>
+          <input type="text" id="ordName" placeholder="e.g. ShadowBlade">
+        </div>
+      </div>
+
+      <div class="order-summary">
+        <div>
+          <div class="order-total-lbl">Estimated Total</div>
+          <div class="order-total-main" id="ordTotalMain">S$5.00</div>
+          <div class="order-total-alt">
+            <span class="cur-pill myr" id="ordTotalMyr">RM16.00</span>
+            <span class="cur-pill idr" id="ordTotalIdr">Rp70,000</span>
+          </div>
+          <div class="order-recap" id="ordRecap">10 stars × S$0.50 (Ranked Boosting, Epic)</div>
+        </div>
+        <a href="#" id="ordWaBtn" class="btn-primary" target="_blank" rel="noopener">Order via WhatsApp</a>
+      </div>
+      <div class="table-foot-note" style="margin-top:14px;">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 16v-5"/><circle cx="12" cy="8" r="0.5" fill="currentColor"/></svg>
+        This is an estimate based on current exchange rates. Final price is confirmed in IDR (Rp) via WhatsApp.
+      </div>
+    </div>
+
+    <div class="contact-strip" style="margin-top:32px;">
+      <div>
+        <h3>Not sure which tier or star count?</h3>
+        <p>Send us a screenshot of your rank and our team will help fill in the order for you.</p>
+      </div>
+      <a href="https://wa.me/628217785931?text=Hi%2C%20I%27d%20like%20help%20figuring%20out%20my%20order" class="btn-primary" target="_blank" rel="noopener">Ask For Help</a>
+    </div>
+  </div>
+</section>
+
+</div>
+<!-- ======================= /PAGE: ORDER ======================= -->
+
+
 <!-- ======================= PAGE: WINRATE ======================= -->
 <div id="page-winrate" style="display:none;">
 
@@ -1070,6 +1182,70 @@
 </a>
 
 <script>
+  // ---- Order calculator ----
+  var ORD_RATES = { sgd: 13950, myr: 4365 }; // IDR per 1 unit
+  var ORD_PRICES = {
+    boost: { epic:7000, legend:8000, mythic:10000, honor:12000, glory:15000, immortal:18000 },
+    carry: { epic:8000, legend:9000, mythic:12000, honor:15000, glory:18000, immortal:20000 }
+  };
+  var ORD_LABELS = {
+    service: { boost:'Ranked Boosting', carry:'Carry Rank' },
+    tier: { epic:'Epic', legend:'Legend', mythic:'Mythic', honor:'Mythic Honor', glory:'Mythic Glory', immortal:'Mythic Immortal' }
+  };
+  function ordFmtIdr(n){ return 'Rp' + Math.round(n).toLocaleString('en-US'); }
+  function ordFmtSgd(n){ return 'S$' + n.toFixed(2); }
+  function ordFmtMyr(n){ return 'RM' + n.toFixed(2); }
+
+  function updateOrderTotal(){
+    var service = document.getElementById('ordService').value;
+    var tier = document.getElementById('ordTier').value;
+    var starsInput = document.getElementById('ordStars');
+    var stars = parseInt(starsInput.value, 10);
+    if(!stars || stars < 1) stars = 1;
+    starsInput.value = stars;
+
+    var unitIdr = ORD_PRICES[service][tier];
+    var totalIdr = unitIdr * stars;
+    var totalSgd = totalIdr / ORD_RATES.sgd;
+    var totalMyr = totalIdr / ORD_RATES.myr;
+    var unitSgd = unitIdr / ORD_RATES.sgd;
+
+    document.getElementById('ordTotalMain').textContent = ordFmtSgd(totalSgd);
+    document.getElementById('ordTotalMyr').textContent = ordFmtMyr(totalMyr);
+    document.getElementById('ordTotalIdr').textContent = ordFmtIdr(totalIdr);
+    document.getElementById('ordRecap').textContent =
+      stars + ' stars × ' + ordFmtSgd(unitSgd) + ' (' + ORD_LABELS.service[service] + ', ' + ORD_LABELS.tier[tier] + ')';
+
+    var name = document.getElementById('ordName').value.trim();
+    var lines = [
+      "Hi, I'd like to place an order:",
+      "Service: " + ORD_LABELS.service[service],
+      "Tier: " + ORD_LABELS.tier[tier],
+      "Stars: " + stars,
+      "Estimated total: " + ordFmtSgd(totalSgd) + " / " + ordFmtMyr(totalMyr) + " / " + ordFmtIdr(totalIdr)
+    ];
+    if(name) lines.push("IGN: " + name);
+    var msg = encodeURIComponent(lines.join("\n"));
+    document.getElementById('ordWaBtn').href = "https://wa.me/628217785931?text=" + msg;
+  }
+
+  var ordCalcInited = false;
+  function initOrderCalc(){
+    if(!document.getElementById('ordService')) return;
+    updateOrderTotal();
+    if(ordCalcInited) return;
+    ordCalcInited = true;
+    document.getElementById('ordService').addEventListener('change', updateOrderTotal);
+    document.getElementById('ordTier').addEventListener('change', updateOrderTotal);
+    document.getElementById('ordStars').addEventListener('input', updateOrderTotal);
+    document.getElementById('ordName').addEventListener('input', updateOrderTotal);
+  }
+  if(document.readyState === 'loading'){
+    document.addEventListener('DOMContentLoaded', initOrderCalc);
+  } else {
+    initOrderCalc();
+  }
+
   function toggleMobileMenu(forceClose){
     var burger = document.getElementById('navBurger');
     var menu = document.getElementById('mobileMenu');
@@ -1104,16 +1280,20 @@
   function gotoPage(page, sectionId){
     var home = document.getElementById('page-home');
     var pricelist = document.getElementById('page-pricelist');
+    var order = document.getElementById('page-order');
     var winrate = document.getElementById('page-winrate');
     var navPricelist = document.getElementById('nav-pricelist');
+    var navOrderCta = document.getElementById('nav-order-cta');
     var navWinrate = document.getElementById('nav-winrate');
     var mnavPricelist = document.getElementById('mnav-pricelist');
     var mnavWinrate = document.getElementById('mnav-winrate');
 
     home.style.display = 'none';
     pricelist.style.display = 'none';
+    order.style.display = 'none';
     winrate.style.display = 'none';
     navPricelist.classList.remove('active');
+    navOrderCta.classList.remove('active');
     navWinrate.classList.remove('active');
     mnavPricelist.classList.remove('active');
     mnavWinrate.classList.remove('active');
@@ -1124,6 +1304,12 @@
       mnavPricelist.classList.add('active');
       window.scrollTo(0,0);
       history.replaceState(null, '', '#pricelist');
+    } else if(page === 'order'){
+      order.style.display = 'block';
+      navOrderCta.classList.add('active');
+      window.scrollTo(0,0);
+      history.replaceState(null, '', '#order');
+      initOrderCalc();
     } else if(page === 'winrate'){
       winrate.style.display = 'block';
       navWinrate.classList.add('active');
@@ -1145,10 +1331,10 @@
     }
   }
 
-  // Open the right page on load based on URL hash (e.g. #pricelist, #winrate)
+  // Open the right page on load based on URL hash (e.g. #pricelist, #order, #winrate)
   (function(){
     var hash = window.location.hash.replace('#','');
-    if(hash === 'pricelist' || hash === 'winrate'){
+    if(hash === 'pricelist' || hash === 'order' || hash === 'winrate'){
       gotoPage(hash);
     } else if(hash){
       gotoPage('home', hash);
