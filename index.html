@@ -452,6 +452,20 @@
   }
   .order-field select:focus, .order-field input:focus{border-color:var(--gold);}
   .order-field select option{background:#14152b; color:#f2f0ff; padding:10px;}
+  .order-field select:disabled, .order-field input:disabled{
+    opacity:0.55; cursor:not-allowed; background:rgba(255,255,255,0.02);
+  }
+  .ord-lock-notice{
+    display:flex; align-items:flex-start; gap:12px; margin-bottom:24px; padding:16px 18px;
+    border:1px solid rgba(232,184,75,0.35); border-radius:14px; background:rgba(232,184,75,0.07);
+    font-size:13.5px; color:var(--text-primary); line-height:1.6;
+  }
+  .ord-lock-notice svg{flex-shrink:0; margin-top:2px; color:var(--gold);}
+  .ord-lock-notice b{color:var(--gold-soft); font-family:'JetBrains Mono',monospace; font-weight:600;}
+  .ord-lock-notice .ord-lock-actions{margin-top:8px; display:flex; gap:14px; flex-wrap:wrap;}
+  .ord-lock-notice a{color:var(--violet-glow); font-weight:600; cursor:pointer; text-decoration:underline; text-underline-offset:2px;}
+  .ord-lock-notice a:hover{color:var(--gold-soft);}
+  .btn-primary.disabled{opacity:0.5; pointer-events:none; cursor:not-allowed;}
   .order-summary{
     margin-top:26px; border-top:1px solid var(--line); padding-top:24px;
     display:flex; align-items:center; justify-content:space-between; gap:20px; flex-wrap:wrap;
@@ -488,11 +502,14 @@
   .ord-modal h3{font-family:'Rajdhani',sans-serif; font-size:21px; font-weight:700; margin-bottom:4px; padding-right:30px;}
   .ord-modal-sub{font-size:13px; color:var(--text-muted); margin-bottom:20px; line-height:1.55;}
   .ord-order-code{
-    text-align:center; font-family:'JetBrains Mono',monospace; font-size:12.5px; letter-spacing:0.03em;
+    display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:8px 12px;
+    font-family:'JetBrains Mono',monospace; font-size:12px; letter-spacing:0.02em;
     color:var(--text-dim); background:rgba(109,93,252,0.08); border:1px solid rgba(109,93,252,0.3);
-    border-radius:9px; padding:9px 12px; margin-bottom:18px;
+    border-radius:9px; padding:9px 12px; margin-bottom:14px;
   }
-  .ord-order-code span{color:var(--gold-soft); font-weight:600;}
+  .ord-order-code b{color:var(--gold-soft); font-weight:600;}
+  .ord-order-timer{font-weight:700; color:var(--violet-glow); white-space:nowrap;}
+  .ord-order-timer.expired{color:#ff5c7a;}
   .ord-qr-box{
     background:#fff; border-radius:14px; padding:8px; width:210px; height:210px;
     margin:0 auto 18px; display:flex; align-items:center; justify-content:center;
@@ -513,6 +530,12 @@
   .ord-modal-confirm{
     width:100%; justify-content:center; text-align:center; display:flex; align-items:center; gap:9px;
   }
+  .ord-modal-confirm.disabled{opacity:0.5; pointer-events:none; cursor:not-allowed;}
+  .ord-cancel-link{
+    display:block; text-align:center; margin-top:14px; font-size:12.5px; color:var(--text-dim);
+    text-decoration:underline; cursor:pointer;
+  }
+  .ord-cancel-link:hover{color:#ff5c7a;}
   .ord-method-tabs{
     display:flex; gap:8px; margin-bottom:18px; background:var(--bg-deep);
     border:1px solid var(--line); border-radius:12px; padding:4px;
@@ -1086,6 +1109,17 @@
         <p style="max-width:100%;">Pick a service, tier, and how many stars — the total updates live. Tap the button and the order details go straight to our WhatsApp chat.</p>
       </div>
 
+      <div class="ord-lock-notice" id="ordLockNotice" style="display:none;">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="4" y="10" width="16" height="10" rx="2"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/></svg>
+        <div>
+          <div>You have an order in progress — <b id="ordLockCode">—</b>. Finish the payment or cancel it to start a new one.</div>
+          <div class="ord-lock-actions">
+            <a id="ordLockViewBtn">View Order</a>
+            <a id="ordLockCancelBtn">Cancel Order</a>
+          </div>
+        </div>
+      </div>
+
       <div class="order-grid">
         <div class="order-field">
           <label for="ordService">Service</label>
@@ -1161,7 +1195,8 @@
     <p class="ord-modal-sub">Pilih metode pembayaran, scan QR di bawah, lalu transfer sesuai total yang tertera. Setelah itu, kirim bukti bayar via WhatsApp untuk konfirmasi.</p>
 
     <div class="ord-order-code" id="ordOrderCode">
-      Kode Order: <span id="ordOrderCodeVal">—</span>
+      <span>Kode Order: <b id="ordOrderCodeVal">—</b></span>
+      <span class="ord-order-timer" id="ordOrderTimer">05:00</span>
     </div>
 
     <div class="ord-method-tabs">
@@ -1192,6 +1227,7 @@
     <a href="#" id="ordModalConfirmBtn" class="btn-primary ord-modal-confirm" target="_blank" rel="noopener">
       Saya Sudah Bayar — Konfirmasi via WhatsApp
     </a>
+    <a href="javascript:void(0)" id="ordCancelBtn" class="ord-cancel-link">Batalkan Order</a>
   </div>
 </div>
 <!-- ======================= /ORDER PAYMENT MODAL ======================= -->
@@ -1387,6 +1423,9 @@
   // ---- Payment modal ----
   var ordModalState = null;
   var ordActiveMethod = 'idr';
+  var ordCountdownInterval = null;
+  var ORD_PENDING_KEY = 'ascenra_pending_order';
+  var ORD_DURATION_MS = 5 * 60 * 1000; // 5 minutes
 
   function ordGenerateOrderCode(){
     var now = new Date();
@@ -1399,12 +1438,139 @@
     return 'ASC-' + yy + mm + dd + '-' + rand;
   }
 
+  // Uniquely identifies "the same order" — if any of these change, it's a new order.
+  function ordBuildSignature(){
+    var service = document.getElementById('ordService').value;
+    var tier = document.getElementById('ordTier') ? document.getElementById('ordTier').value : '';
+    var stars = document.getElementById('ordStars') ? document.getElementById('ordStars').value : '';
+    var name = document.getElementById('ordName').value.trim().toLowerCase();
+    return [service, tier, stars, name].join('|');
+  }
+
+  function ordLoadStoredOrder(){
+    try{
+      var raw = localStorage.getItem(ORD_PENDING_KEY);
+      if(!raw) return null;
+      var obj = JSON.parse(raw);
+      if(!obj || !obj.expiresAt || Date.now() >= obj.expiresAt){
+        localStorage.removeItem(ORD_PENDING_KEY);
+        return null;
+      }
+      return obj;
+    } catch(e){
+      return null;
+    }
+  }
+
+  function ordSaveStoredOrder(obj){
+    try{ localStorage.setItem(ORD_PENDING_KEY, JSON.stringify(obj)); } catch(e){}
+  }
+
+  function ordClearStoredOrder(){
+    try{ localStorage.removeItem(ORD_PENDING_KEY); } catch(e){}
+  }
+
+  function ordStartCountdown(expiresAt){
+    var timerEl = document.getElementById('ordOrderTimer');
+    var confirmBtn = document.getElementById('ordModalConfirmBtn');
+    if(ordCountdownInterval) clearInterval(ordCountdownInterval);
+
+    function tick(){
+      var remaining = expiresAt - Date.now();
+      if(remaining <= 0){
+        timerEl.textContent = 'Expired';
+        timerEl.classList.add('expired');
+        confirmBtn.classList.add('disabled');
+        clearInterval(ordCountdownInterval);
+        ordClearStoredOrder();
+        ordApplyFormLock();
+        return;
+      }
+      var totalSec = Math.ceil(remaining / 1000);
+      var m = Math.floor(totalSec / 60);
+      var s = totalSec % 60;
+      timerEl.textContent = 'Expires in ' + String(m).padStart(2, '0') + ':' + String(s).padStart(2, '0');
+      timerEl.classList.remove('expired');
+      confirmBtn.classList.remove('disabled');
+    }
+    tick();
+    ordCountdownInterval = setInterval(tick, 1000);
+  }
+
+  // ---- Lock the order form while a pending order exists ----
+  function ordApplyFormLock(){
+    var notice = document.getElementById('ordLockNotice');
+    var codeEl = document.getElementById('ordLockCode');
+    var waBtn = document.getElementById('ordWaBtn');
+    if(!notice || !waBtn) return;
+
+    var fieldIds = ['ordService', 'ordTier', 'ordStars', 'ordName'];
+    var stored = ordLoadStoredOrder();
+
+    if(stored && stored.code){
+      // Restore the locked order's values onto the form so what's shown
+      // always matches the pending order, even after a page reload.
+      if(stored.service) document.getElementById('ordService').value = stored.service;
+      if(stored.tier) document.getElementById('ordTier').value = stored.tier;
+      if(stored.stars) document.getElementById('ordStars').value = stored.stars;
+      if(typeof stored.name === 'string') document.getElementById('ordName').value = stored.name;
+
+      fieldIds.forEach(function(id){
+        var el = document.getElementById(id);
+        if(el) el.disabled = true;
+      });
+
+      notice.style.display = 'flex';
+      codeEl.textContent = stored.code;
+      waBtn.classList.add('disabled');
+
+      updateOrderTotal();
+    } else {
+      fieldIds.forEach(function(id){
+        var el = document.getElementById(id);
+        if(el) el.disabled = false;
+      });
+      notice.style.display = 'none';
+      waBtn.classList.remove('disabled');
+    }
+  }
+
+  // Cancelling clears the stored order and unlocks the form, wherever the
+  // cancel action was triggered from (inside the modal or the lock notice).
+  function ordCancelOrder(){
+    ordClearStoredOrder();
+    ordClosePaymentModal();
+    ordApplyFormLock();
+  }
+
   function ordOpenPaymentModal(){
     if(!window._ordPending) updateOrderTotal();
     var pending = window._ordPending;
 
     var myrTotal = Math.round(pending.totalMyrNum * 100) / 100;
-    var orderCode = ordGenerateOrderCode();
+    var signature = ordBuildSignature();
+    var stored = ordLoadStoredOrder();
+    var orderCode, expiresAt;
+
+    if(stored && stored.signature === signature){
+      // Same order as before and still within the 5-minute window — reuse it.
+      orderCode = stored.code;
+      expiresAt = stored.expiresAt;
+    } else {
+      orderCode = ordGenerateOrderCode();
+      expiresAt = Date.now() + ORD_DURATION_MS;
+      ordSaveStoredOrder({
+        code: orderCode,
+        signature: signature,
+        expiresAt: expiresAt,
+        service: document.getElementById('ordService').value,
+        tier: document.getElementById('ordTier').value,
+        stars: document.getElementById('ordStars').value,
+        name: document.getElementById('ordName').value.trim()
+      });
+    }
+
+    ordApplyFormLock();
 
     // Insert the order code right after "Total Pembayaran" and before "Nickname"
     var linesWithCode = pending.lines.slice(0, 4)
@@ -1413,6 +1579,7 @@
 
     ordModalState = {
       code: orderCode,
+      expiresAt: expiresAt,
       lines: linesWithCode,
       idr: {
         finalDisplay: ordFmtIdr(pending.totalIdrNum),
@@ -1428,6 +1595,7 @@
 
     ordActiveMethod = 'idr';
     ordRenderMethod();
+    ordStartCountdown(expiresAt);
     document.getElementById('ordModalOverlay').classList.add('open');
     document.body.style.overflow = 'hidden';
   }
@@ -1454,6 +1622,7 @@
   function ordClosePaymentModal(){
     document.getElementById('ordModalOverlay').classList.remove('open');
     document.body.style.overflow = '';
+    if(ordCountdownInterval){ clearInterval(ordCountdownInterval); ordCountdownInterval = null; }
   }
 
   (function(){
@@ -1461,6 +1630,7 @@
     var closeBtn = document.getElementById('ordModalClose');
     var waBtn = document.getElementById('ordWaBtn');
     var copyBtn = document.getElementById('ordCodeCopyBtn');
+    var cancelBtn = document.getElementById('ordCancelBtn');
     var methodIdBtn = document.getElementById('ordMethodIdBtn');
     var methodMyBtn = document.getElementById('ordMethodMyBtn');
     if(!overlay || !waBtn) return;
@@ -1512,11 +1682,36 @@
         setTimeout(function(){ copyBtn.classList.remove('copied'); }, 1500);
       });
     });
+    if(cancelBtn){
+      cancelBtn.addEventListener('click', ordCancelOrder);
+    }
+    var confirmBtn = document.getElementById('ordModalConfirmBtn');
+    if(confirmBtn){
+      confirmBtn.addEventListener('click', function(){
+        // Order is considered submitted once they say they've paid — clear it
+        // so a future order always starts fresh.
+        ordClearStoredOrder();
+        ordApplyFormLock();
+      });
+    }
+
+    var lockViewBtn = document.getElementById('ordLockViewBtn');
+    var lockCancelBtn = document.getElementById('ordLockCancelBtn');
+    if(lockViewBtn){
+      lockViewBtn.addEventListener('click', function(){
+        updateOrderTotal();
+        ordOpenPaymentModal();
+      });
+    }
+    if(lockCancelBtn){
+      lockCancelBtn.addEventListener('click', ordCancelOrder);
+    }
   })();
 
   var ordCalcInited = false;
   function initOrderCalc(){
     if(!document.getElementById('ordService')) return;
+    ordApplyFormLock();
     updateOrderTotal();
     if(ordCalcInited) return;
     ordCalcInited = true;
