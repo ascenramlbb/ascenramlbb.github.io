@@ -275,19 +275,20 @@
   @media (max-width:900px){ .pkg-grid{grid-template-columns:1fr; max-width:420px; margin:0 auto;} }
   .pkg-card{
     background:var(--bg-panel); border:1px solid var(--line); border-radius:16px; padding:30px 26px;
-    display:flex; flex-direction:column; position:relative;
+    display:flex; flex-direction:column; position:relative; cursor:pointer;
+    transition:border-color .2s ease, box-shadow .2s ease;
   }
-  .pkg-card.featured{border-color:rgba(232,184,75,0.5); background:linear-gradient(180deg, rgba(232,184,75,0.06), var(--bg-panel) 40%);}
-  .pkg-tag{
-    position:absolute; top:-13px; left:26px; background:var(--gold); color:#181103;
-    font-size:11px; font-weight:700; letter-spacing:0.06em; text-transform:uppercase;
-    padding:5px 12px; border-radius:999px;
+  .pkg-card.selected{border-color:var(--gold); box-shadow:0 0 0 1px var(--gold) inset, 0 8px 24px rgba(232,184,75,0.12);}
+  .pkg-check{
+    display:none; position:absolute; top:-11px; right:24px; width:24px; height:24px; border-radius:50%;
+    background:var(--gold); color:#181103; align-items:center; justify-content:center;
+    box-shadow:0 4px 14px rgba(232,184,75,0.4);
   }
+  .pkg-card.selected .pkg-check{display:flex;}
   .pkg-icon{
     width:46px; height:46px; border-radius:12px; display:flex; align-items:center; justify-content:center;
     background:rgba(232,184,75,0.1); color:var(--gold); margin-bottom:18px;
   }
-  .pkg-card.featured .pkg-icon{background:rgba(232,184,75,0.16);}
   .pkg-route{font-family:'JetBrains Mono',monospace; font-size:11.5px; color:var(--text-dim); text-transform:uppercase; letter-spacing:0.08em; margin-bottom:8px;}
   .pkg-card h3{font-family:'Rajdhani',sans-serif; font-weight:700; font-size:23px; margin-bottom:8px;}
   .pkg-desc{font-size:13.5px; color:var(--text-muted); line-height:1.55; margin-bottom:18px;}
@@ -299,11 +300,9 @@
   .pkg-feats li svg{flex-shrink:0; margin-top:2px; color:var(--gold);}
   .pkg-btn{
     text-align:center; padding:13px; border-radius:9px; font-weight:700; font-size:14px;
-    border:1px solid var(--line); transition:all .15s ease;
+    border:1px solid var(--line); transition:all .15s ease; cursor:pointer; display:block;
   }
-  .pkg-card.featured .pkg-btn{background:var(--gold); color:#181103; border-color:var(--gold);}
-  .pkg-card.featured .pkg-btn:hover{box-shadow:0 8px 22px rgba(232,184,75,0.35); transform:translateY(-1px);}
-  .pkg-card:not(.featured) .pkg-btn:hover{border-color:var(--violet-glow); background:rgba(109,93,252,0.08);}
+  .pkg-btn:hover{border-color:var(--violet-glow); background:rgba(109,93,252,0.08);}
 
   /* process */
   .process-list{display:flex; flex-direction:column;}
@@ -649,7 +648,7 @@
 
       <div class="hv-top">
         <span class="hv-tag">Hero of the Match</span>
-        <div class="hv-rank"><div class="lbl">Current Rank</div><div class="val">Mythical Glory</div></div>
+        <div class="hv-rank"><div class="lbl">Current Rank</div><div class="val">Mythical Immortal</div></div>
       </div>
 
       <div class="hv-figure-wrap">
@@ -749,7 +748,8 @@
       <p>Want your account fully piloted, want to play alongside a booster, or having trouble with your account? Pick the service that fits your needs.</p>
     </div>
     <div class="pkg-grid">
-      <div class="pkg-card">
+      <div class="pkg-card" data-service="boost" onclick="selectServiceCard('boost')">
+        <div class="pkg-check"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg></div>
         <div class="pkg-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M13 2L3 14h7l-1 8 11-14h-7l1-6z"/></svg></div>
         <div class="pkg-route">Rank Boost</div>
         <h3>Ranked Boosting</h3>
@@ -762,10 +762,10 @@
           <li><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M20 6L9 17l-5-5"/></svg> Free hero requests</li>
           <li><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M20 6L9 17l-5-5"/></svg> Session schedule by agreement</li>
         </ul>
-        <a href="https://wa.me/628217785931?text=Hi%2C%20I%27d%20like%20to%20order%20Ranked%20Boosting" class="pkg-btn" target="_blank" rel="noopener">Order Ranked Boosting</a>
+        <a href="javascript:void(0)" class="pkg-btn" onclick="event.stopPropagation(); goOrderWithService('boost')">Order Ranked Boosting</a>
       </div>
-      <div class="pkg-card featured">
-        <div class="pkg-tag">Most Popular</div>
+      <div class="pkg-card" data-service="carry" onclick="selectServiceCard('carry')">
+        <div class="pkg-check"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg></div>
         <div class="pkg-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="9" cy="7" r="3.2"/><circle cx="17" cy="7" r="2.6"/><path d="M3 21v-1.5C3 16.9 5.7 15 9 15s6 1.9 6 4.5V21"/><path d="M15.5 15.3c2.8.4 4.5 2.1 4.5 4.2V21"/></svg></div>
         <div class="pkg-route">Duo / Party Push</div>
         <h3>Carry Rank</h3>
@@ -778,9 +778,10 @@
           <li><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M20 6L9 17l-5-5"/></svg> Role and pick recommendations every match</li>
           <li><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M20 6L9 17l-5-5"/></svg> Chat and learn while you play</li>
         </ul>
-        <a href="https://wa.me/628217785931?text=Hi%2C%20I%27d%20like%20to%20order%20Carry%20Rank" class="pkg-btn" target="_blank" rel="noopener">Order Carry Rank</a>
+        <a href="javascript:void(0)" class="pkg-btn" onclick="event.stopPropagation(); goOrderWithService('carry')">Order Carry Rank</a>
       </div>
-      <div class="pkg-card">
+      <div class="pkg-card" data-service="recovery" onclick="selectServiceCard('recovery')">
+        <div class="pkg-check"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg></div>
         <div class="pkg-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="4" y="10" width="16" height="10" rx="2"/><path d="M8 10V7a4 4 0 018 0v3"/><path d="M12 14v3"/></svg></div>
         <div class="pkg-route">Account Recovery</div>
         <h3>Retrieve Account</h3>
@@ -793,7 +794,7 @@
           <li><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M20 6L9 17l-5-5"/></svg> Free consultation on your case first</li>
           <li><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M20 6L9 17l-5-5"/></svg> Pay only after your account is recovered</li>
         </ul>
-        <a href="https://wa.me/628217785931?text=Hi%2C%20I%27d%20like%20to%20order%20Account%20Recovery" class="pkg-btn" target="_blank" rel="noopener">Order Retrieve Account</a>
+        <a href="javascript:void(0)" class="pkg-btn" onclick="event.stopPropagation(); goOrderWithService('recovery')">Order Retrieve Account</a>
       </div>
     </div>
   </div>
@@ -985,7 +986,7 @@
     </table>
     <div class="table-foot-note">
       <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 16v-5"/><circle cx="12" cy="8" r="0.5" fill="currentColor"/></svg>
-      MYR prices are estimates based on current exchange rates. Final price is confirmed in IDR (Rp) via WhatsApp.
+      The IDR (Rp) price shown is final. RM is just an estimate based on today's exchange rate.
     </div>
 
     <div class="table-cta">
@@ -1041,7 +1042,7 @@
     </table>
     <div class="table-foot-note">
       <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 16v-5"/><circle cx="12" cy="8" r="0.5" fill="currentColor"/></svg>
-      MYR prices are estimates based on current exchange rates. Final price is confirmed in IDR (Rp) via WhatsApp.
+      The IDR (Rp) price shown is final. RM is just an estimate based on today's exchange rate.
     </div>
 
     <div class="table-cta">
@@ -1091,9 +1092,10 @@
           <select id="ordService">
             <option value="boost">Ranked Boosting (piloted)</option>
             <option value="carry">Carry Rank (play together)</option>
+            <option value="recovery">Retrieve Account</option>
           </select>
         </div>
-        <div class="order-field">
+        <div class="order-field" id="ordTierField">
           <label for="ordTier">Tier</label>
           <select id="ordTier">
             <option value="epic">Epic</option>
@@ -1104,7 +1106,7 @@
             <option value="immortal">Mythic Immortal</option>
           </select>
         </div>
-        <div class="order-field">
+        <div class="order-field" id="ordStarsField">
           <label for="ordStars">Number of Stars</label>
           <input type="number" id="ordStars" value="10" min="1" max="500">
         </div>
@@ -1114,20 +1116,25 @@
         </div>
       </div>
 
+      <div class="table-foot-note" id="ordRecoveryNote" style="display:none; margin-top:2px; margin-bottom:22px;">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 16v-5"/><circle cx="12" cy="8" r="0.5" fill="currentColor"/></svg>
+        Account Recovery pricing depends on case difficulty, so there's no fixed total here. Tap the button below to chat with us directly on WhatsApp — no payment yet, just tell us what happened and we'll assess your case for free.
+      </div>
+
       <div class="order-summary">
         <div>
-          <div class="order-total-lbl">Total Pembayaran</div>
+          <div class="order-total-lbl" id="ordTotalLbl">Total Pembayaran</div>
           <div class="order-total-main" id="ordTotalMain">Rp70,000</div>
-          <div class="order-total-alt">
+          <div class="order-total-alt" id="ordTotalAlt">
             <span class="cur-pill myr" id="ordTotalMyr">RM16.00</span>
           </div>
           <div class="order-recap" id="ordRecap">10 stars × Rp7,000 (Ranked Boosting, Epic)</div>
         </div>
         <a href="#" id="ordWaBtn" class="btn-primary">Lanjut ke Pembayaran</a>
       </div>
-      <div class="table-foot-note" style="margin-top:14px;">
+      <div class="table-foot-note" id="ordExchangeNote" style="margin-top:14px;">
         <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 16v-5"/><circle cx="12" cy="8" r="0.5" fill="currentColor"/></svg>
-        This is an estimate based on current exchange rates. Final price is confirmed in IDR (Rp) via WhatsApp.
+        The IDR (Rp) total above is final — RM is just an estimate based on today's exchange rate.
       </div>
     </div>
 
@@ -1296,7 +1303,7 @@
     carry: { epic:8000, legend:9000, mythic:12000, honor:15000, glory:18000, immortal:20000 }
   };
   var ORD_LABELS = {
-    service: { boost:'Ranked Boosting', carry:'Carry Rank' },
+    service: { boost:'Ranked Boosting', carry:'Carry Rank', recovery:'Retrieve Account' },
     tier: { epic:'Epic', legend:'Legend', mythic:'Mythic', honor:'Mythic Honor', glory:'Mythic Glory', immortal:'Mythic Immortal' }
   };
   function ordFmtIdr(n){ return 'Rp' + Math.round(n).toLocaleString('en-US'); }
@@ -1304,6 +1311,41 @@
 
   function updateOrderTotal(){
     var service = document.getElementById('ordService').value;
+    var isRecovery = service === 'recovery';
+    var name = document.getElementById('ordName').value.trim();
+
+    // Toggle the fields/notes that only apply to priced services (boost/carry)
+    document.getElementById('ordTierField').style.display = isRecovery ? 'none' : '';
+    document.getElementById('ordStarsField').style.display = isRecovery ? 'none' : '';
+    document.getElementById('ordRecoveryNote').style.display = isRecovery ? '' : 'none';
+    document.getElementById('ordExchangeNote').style.display = isRecovery ? 'none' : '';
+    document.getElementById('ordTotalAlt').style.display = isRecovery ? 'none' : '';
+
+    var waBtn = document.getElementById('ordWaBtn');
+
+    if(isRecovery){
+      document.getElementById('ordTotalLbl').textContent = 'Pricing';
+      document.getElementById('ordTotalMain').textContent = 'Case-based';
+      document.getElementById('ordRecap').textContent = 'Final price is confirmed after we review your case';
+
+      var recoveryLines = ["Service: " + ORD_LABELS.service.recovery];
+      recoveryLines.push(name ? "Nickname: " + name : "Nickname: -");
+      recoveryLines.push("I'd like a free consultation to recover my account.");
+
+      window._ordPending = { lines: recoveryLines, isRecovery: true };
+
+      waBtn.textContent = 'Chat via WhatsApp';
+      waBtn.href = 'https://wa.me/628217785931?text=' + encodeURIComponent(recoveryLines.join('\n'));
+      waBtn.target = '_blank';
+      waBtn.rel = 'noopener';
+      return;
+    }
+
+    waBtn.textContent = 'Lanjut ke Pembayaran';
+    waBtn.removeAttribute('target');
+    waBtn.removeAttribute('rel');
+    waBtn.href = '#';
+
     var tier = document.getElementById('ordTier').value;
     var starsInput = document.getElementById('ordStars');
     var stars = parseInt(starsInput.value, 10);
@@ -1314,20 +1356,19 @@
     var totalIdr = unitIdr * stars;
     var totalMyr = totalIdr / ORD_RATES.myr;
 
+    document.getElementById('ordTotalLbl').textContent = 'Total Pembayaran';
     document.getElementById('ordTotalMain').textContent = ordFmtIdr(totalIdr);
     document.getElementById('ordTotalMyr').textContent = ordFmtMyr(totalMyr);
     document.getElementById('ordRecap').textContent =
       stars + ' stars × ' + ordFmtIdr(unitIdr) + ' (' + ORD_LABELS.service[service] + ', ' + ORD_LABELS.tier[tier] + ')';
 
-    var name = document.getElementById('ordName').value.trim();
     var lines = [
       "Service: " + ORD_LABELS.service[service],
       "Tier: " + ORD_LABELS.tier[tier],
       "Stars: " + stars,
       "Total Pembayaran: " + ordFmtIdr(totalIdr) + " / " + ordFmtMyr(totalMyr)
     ];
-    if(name) lines.push("Nickname: " + name);
-    else lines.push("Nickname: -");
+    lines.push(name ? "Nickname: " + name : "Nickname: -");
 
     // Stash the current order details so the payment modal can build
     // the WhatsApp confirmation message.
@@ -1425,9 +1466,9 @@
     if(!overlay || !waBtn) return;
 
     waBtn.addEventListener('click', function(e){
-      e.preventDefault();
       var nameInput = document.getElementById('ordName');
       if(!nameInput.value.trim()){
+        e.preventDefault();
         nameInput.focus();
         nameInput.style.borderColor = '#ff5c7a';
         nameInput.placeholder = 'Nickname wajib diisi';
@@ -1438,6 +1479,14 @@
         return;
       }
       updateOrderTotal();
+      var isRecovery = document.getElementById('ordService').value === 'recovery';
+      if(isRecovery){
+        // Retrieve Account has no fixed price, so skip the QR payment
+        // modal entirely and just open the WhatsApp chat (href is
+        // already set by updateOrderTotal). Let the default link action happen.
+        return;
+      }
+      e.preventDefault();
       ordOpenPaymentModal();
     });
     closeBtn.addEventListener('click', ordClosePaymentModal);
@@ -1480,6 +1529,23 @@
     document.addEventListener('DOMContentLoaded', initOrderCalc);
   } else {
     initOrderCalc();
+  }
+
+  // ---- Service picker (home page service cards) ----
+  function selectServiceCard(service){
+    document.querySelectorAll('.pkg-card').forEach(function(c){
+      c.classList.toggle('selected', c.getAttribute('data-service') === service);
+    });
+  }
+
+  function goOrderWithService(service){
+    selectServiceCard(service);
+    gotoPage('order');
+    var sel = document.getElementById('ordService');
+    if(sel){
+      sel.value = service;
+      updateOrderTotal();
+    }
   }
 
   function toggleMobileMenu(forceClose){
