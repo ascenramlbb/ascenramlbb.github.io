@@ -387,18 +387,22 @@
   .tier-dot{width:9px; height:9px; border-radius:50%; flex-shrink:0;}
   .tier-name{font-family:'Rajdhani',sans-serif; font-weight:700; font-size:16px;}
 
-  .price-cell{text-align:right; font-family:'Rajdhani',sans-serif; font-weight:700; font-size:18px; color:var(--gold-soft); white-space:nowrap;}
-  .price-cell sup{font-size:11.5px; font-weight:600; color:var(--text-dim); font-family:'Plus Jakarta Sans';}
-  .price-main{font-family:'Rajdhani',sans-serif; font-weight:700; font-size:18px; color:var(--gold-soft);}
-  .price-main sup{font-size:11.5px; font-weight:600; color:var(--text-dim); font-family:'Plus Jakarta Sans';}
-  .price-alt{display:flex; justify-content:flex-end; gap:6px; margin-top:7px; flex-wrap:wrap;}
+  .price-cell{text-align:right; font-family:'Rajdhani',sans-serif; font-weight:700; font-size:20px; color:var(--gold-soft); white-space:nowrap;}
+  .price-cell sup{font-size:12px; font-weight:600; color:var(--text-dim); font-family:'Plus Jakarta Sans';}
+  .price-main{font-family:'Rajdhani',sans-serif; font-weight:700; font-size:20px; color:var(--gold-soft); letter-spacing:0.01em;}
+  .price-main sup{font-size:12px; font-weight:600; color:var(--text-dim); font-family:'Plus Jakarta Sans';}
+  .price-alt{display:flex; justify-content:flex-end; gap:6px; margin-top:8px; flex-wrap:wrap;}
   .cur-pill{
-    font-family:'JetBrains Mono',monospace; font-weight:600; font-size:12.5px; color:var(--text-primary);
+    font-family:'JetBrains Mono',monospace; font-weight:600; font-size:12px; color:var(--text-primary);
     background:rgba(109,93,252,0.1); border:1px solid rgba(109,93,252,0.3);
-    padding:3px 9px; border-radius:7px; white-space:nowrap; letter-spacing:0.01em;
+    padding:3.5px 10px; border-radius:7px; white-space:nowrap; letter-spacing:0.01em;
+    display:inline-flex; align-items:center; gap:5px;
   }
+  .cur-pill::before{content:''; width:6px; height:6px; border-radius:2px; background:var(--violet-glow); flex-shrink:0;}
   .cur-pill.myr{background:rgba(109,93,252,0.1); border-color:rgba(109,93,252,0.3);}
+  .cur-pill.myr::before{background:var(--violet-glow);}
   .cur-pill.idr{background:rgba(232,184,75,0.08); border-color:rgba(232,184,75,0.28);}
+  .cur-pill.idr::before{background:var(--gold);}
   .pkg-price-alt{display:flex; gap:6px; margin-top:8px; margin-bottom:18px; flex-wrap:wrap;}
 
   .badge-popular{
@@ -462,6 +466,58 @@
     .order-grid{grid-template-columns:1fr;}
     .order-total-main{font-size:25px;}
   }
+
+  /* ---------- ORDER PAYMENT MODAL ---------- */
+  .ord-modal-overlay{
+    display:none; position:fixed; inset:0; z-index:200;
+    background:rgba(6,7,14,0.72); backdrop-filter:blur(4px);
+    align-items:center; justify-content:center; padding:20px;
+  }
+  .ord-modal-overlay.open{display:flex;}
+  .ord-modal{
+    background:linear-gradient(160deg, var(--bg-panel), var(--bg-panel-2));
+    border:1px solid var(--line); border-radius:20px;
+    max-width:420px; width:100%; padding:28px 26px 26px; position:relative;
+    max-height:92vh; overflow-y:auto;
+  }
+  .ord-modal-close{
+    position:absolute; top:16px; right:16px; width:32px; height:32px; border-radius:8px;
+    border:1px solid var(--line); background:transparent; color:var(--text-muted);
+    display:flex; align-items:center; justify-content:center; cursor:pointer;
+  }
+  .ord-modal-close:hover{color:var(--text-primary); border-color:var(--text-dim);}
+  .ord-modal h3{font-family:'Rajdhani',sans-serif; font-size:21px; font-weight:700; margin-bottom:4px; padding-right:30px;}
+  .ord-modal-sub{font-size:13px; color:var(--text-muted); margin-bottom:20px; line-height:1.55;}
+  .ord-qr-box{
+    background:#fff; border-radius:14px; padding:14px; width:200px; height:200px;
+    margin:0 auto 18px; display:flex; align-items:center; justify-content:center;
+  }
+  .ord-qr-box img{width:100%; height:100%; object-fit:contain;}
+  .ord-modal-total{text-align:center; margin-bottom:20px;}
+  .ord-modal-total-lbl{font-size:11.5px; color:var(--text-dim); text-transform:uppercase; letter-spacing:0.08em; margin-bottom:6px;}
+  .ord-modal-total-val{font-family:'Rajdhani',sans-serif; font-weight:700; font-size:30px; color:var(--gold-soft);}
+  .ord-total-copy-row{display:flex; align-items:center; justify-content:center; gap:12px;}
+  .ord-code-copy{
+    background:transparent; border:1px solid var(--line); color:var(--text-muted); border-radius:8px;
+    width:34px; height:34px; display:flex; align-items:center; justify-content:center; cursor:pointer; flex-shrink:0;
+  }
+  .ord-code-copy:hover{color:var(--text-primary); border-color:var(--text-dim);}
+  .ord-code-copy.copied{color:#3ed9a0; border-color:#3ed9a0;}
+  .ord-modal-steps{font-size:12.5px; color:var(--text-muted); line-height:1.7; margin-bottom:20px; padding-left:18px;}
+  .ord-modal-steps li{margin-bottom:2px;}
+  .ord-modal-confirm{
+    width:100%; justify-content:center; text-align:center; display:flex; align-items:center; gap:9px;
+  }
+  .ord-method-tabs{
+    display:flex; gap:8px; margin-bottom:18px; background:var(--bg-deep);
+    border:1px solid var(--line); border-radius:12px; padding:4px;
+  }
+  .ord-method-tab{
+    flex:1; background:transparent; border:none; border-radius:9px; padding:10px 8px;
+    color:var(--text-muted); font-family:'Plus Jakarta Sans',sans-serif; font-weight:600; font-size:12.5px;
+    cursor:pointer; transition:background .15s ease, color .15s ease; text-align:center; line-height:1.3;
+  }
+  .ord-method-tab.active{background:var(--gold); color:#181103;}
 
   /* floating WA */
   .float-wa{
@@ -692,8 +748,8 @@
         <div class="pkg-route">Rank Boost</div>
         <h3>Ranked Boosting</h3>
         <p class="pkg-desc">Your account is fully piloted by our booster and played until your target rank is reached. Perfect if you're busy but still want to climb.</p>
-        <div class="pkg-price">From S$0.50<sup>/star</sup></div>
-        <div class="pkg-price-alt"><span class="cur-pill myr">RM1.60/star</span><span class="cur-pill idr">Rp7,000/star</span></div>
+        <div class="pkg-price">From Rp7,000<sup>/star</sup></div>
+        <div class="pkg-price-alt"><span class="cur-pill myr">RM1.60/star</span></div>
         <div class="pkg-note">See full pricing on the Pricelist page</div>
         <ul class="pkg-feats">
           <li><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M20 6L9 17l-5-5"/></svg> Fully handled by a professional booster</li>
@@ -708,8 +764,8 @@
         <div class="pkg-route">Duo / Party Push</div>
         <h3>Carry Rank</h3>
         <p class="pkg-desc">You join our professional booster team's party and get carried to victory together.</p>
-        <div class="pkg-price">From S$0.57<sup>/star</sup></div>
-        <div class="pkg-price-alt"><span class="cur-pill myr">RM1.85/star</span><span class="cur-pill idr">Rp8,000/star</span></div>
+        <div class="pkg-price">From Rp8,000<sup>/star</sup></div>
+        <div class="pkg-price-alt"><span class="cur-pill myr">RM1.85/star</span></div>
         <div class="pkg-note">See full pricing on the Pricelist page</div>
         <ul class="pkg-feats">
           <li><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M20 6L9 17l-5-5"/></svg> You join our pro team's party and get carried to victory</li>
@@ -723,8 +779,8 @@
         <div class="pkg-route">Account Recovery</div>
         <h3>Retrieve Account</h3>
         <p class="pkg-desc">We help you regain access to an account with a forgotten email/password, a hack, or a lockout, through the official verification process.</p>
-        <div class="pkg-price">From S$3.60</div>
-        <div class="pkg-price-alt"><span class="cur-pill myr">RM11.50</span><span class="cur-pill idr">Rp50,000</span></div>
+        <div class="pkg-price">From Rp50,000</div>
+        <div class="pkg-price-alt"><span class="cur-pill myr">RM11.50</span></div>
         <div class="pkg-note">Final price depends on case difficulty</div>
         <ul class="pkg-feats">
           <li><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M20 6L9 17l-5-5"/></svg> Recovery assistance via official Moonton verification</li>
@@ -892,38 +948,38 @@
         <tr>
           <td><div class="tier-cell"><span class="tier-dot" style="background:#8891b0"></span><div class="tier-name">Epic</div></div></td>
           <td></td>
-          <td class="price-cell"><div class="price-main">S$0.50<sup>/star</sup></div><div class="price-alt"><span class="cur-pill myr">RM1.60</span><span class="cur-pill idr">Rp7,000</span></div></td>
+          <td class="price-cell"><div class="price-main">Rp7,000<sup>/star</sup></div><div class="price-alt"><span class="cur-pill myr">RM1.60</span></div></td>
         </tr>
         <tr>
           <td><div class="tier-cell"><span class="tier-dot" style="background:#8f7bff"></span><div class="tier-name">Legend</div></div></td>
           <td></td>
-          <td class="price-cell"><div class="price-main">S$0.57<sup>/star</sup></div><div class="price-alt"><span class="cur-pill myr">RM1.85</span><span class="cur-pill idr">Rp8,000</span></div></td>
+          <td class="price-cell"><div class="price-main">Rp8,000<sup>/star</sup></div><div class="price-alt"><span class="cur-pill myr">RM1.85</span></div></td>
         </tr>
         <tr class="hot">
           <td><div class="tier-cell"><span class="tier-dot" style="background:#e8b84b"></span><div class="tier-name">Mythic <span class="badge-popular">Best Seller</span></div></div></td>
           <td></td>
-          <td class="price-cell"><div class="price-main">S$0.72<sup>/star</sup></div><div class="price-alt"><span class="cur-pill myr">RM2.30</span><span class="cur-pill idr">Rp10,000</span></div></td>
+          <td class="price-cell"><div class="price-main">Rp10,000<sup>/star</sup></div><div class="price-alt"><span class="cur-pill myr">RM2.30</span></div></td>
         </tr>
         <tr>
           <td><div class="tier-cell"><span class="tier-dot" style="background:#e8b84b"></span><div class="tier-name">Mythic Honor</div></div></td>
           <td></td>
-          <td class="price-cell"><div class="price-main">S$0.86<sup>/star</sup></div><div class="price-alt"><span class="cur-pill myr">RM2.75</span><span class="cur-pill idr">Rp12,000</span></div></td>
+          <td class="price-cell"><div class="price-main">Rp12,000<sup>/star</sup></div><div class="price-alt"><span class="cur-pill myr">RM2.75</span></div></td>
         </tr>
         <tr>
           <td><div class="tier-cell"><span class="tier-dot" style="background:#f3d68a"></span><div class="tier-name">Mythic Glory</div></div></td>
           <td></td>
-          <td class="price-cell"><div class="price-main">S$1.08<sup>/star</sup></div><div class="price-alt"><span class="cur-pill myr">RM3.45</span><span class="cur-pill idr">Rp15,000</span></div></td>
+          <td class="price-cell"><div class="price-main">Rp15,000<sup>/star</sup></div><div class="price-alt"><span class="cur-pill myr">RM3.45</span></div></td>
         </tr>
         <tr>
           <td><div class="tier-cell"><span class="tier-dot" style="background:#f3d68a"></span><div class="tier-name">Mythic Immortal</div></div></td>
           <td></td>
-          <td class="price-cell"><div class="price-main">S$1.29<sup>/star</sup></div><div class="price-alt"><span class="cur-pill myr">RM4.15</span><span class="cur-pill idr">Rp18,000</span></div></td>
+          <td class="price-cell"><div class="price-main">Rp18,000<sup>/star</sup></div><div class="price-alt"><span class="cur-pill myr">RM4.15</span></div></td>
         </tr>
       </tbody>
     </table>
     <div class="table-foot-note">
       <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 16v-5"/><circle cx="12" cy="8" r="0.5" fill="currentColor"/></svg>
-      SGD & MYR prices are estimates based on current exchange rates. Final price is confirmed in IDR (Rp) via WhatsApp.
+      MYR prices are estimates based on current exchange rates. Final price is confirmed in IDR (Rp) via WhatsApp.
     </div>
 
     <div class="table-cta">
@@ -948,38 +1004,38 @@
         <tr>
           <td><div class="tier-cell"><span class="tier-dot" style="background:#8891b0"></span><div class="tier-name">Epic</div></div></td>
           <td></td>
-          <td class="price-cell"><div class="price-main">S$0.57<sup>/star</sup></div><div class="price-alt"><span class="cur-pill myr">RM1.85</span><span class="cur-pill idr">Rp8,000</span></div></td>
+          <td class="price-cell"><div class="price-main">Rp8,000<sup>/star</sup></div><div class="price-alt"><span class="cur-pill myr">RM1.85</span></div></td>
         </tr>
         <tr>
           <td><div class="tier-cell"><span class="tier-dot" style="background:#8f7bff"></span><div class="tier-name">Legend</div></div></td>
           <td></td>
-          <td class="price-cell"><div class="price-main">S$0.65<sup>/star</sup></div><div class="price-alt"><span class="cur-pill myr">RM2.05</span><span class="cur-pill idr">Rp9,000</span></div></td>
+          <td class="price-cell"><div class="price-main">Rp9,000<sup>/star</sup></div><div class="price-alt"><span class="cur-pill myr">RM2.05</span></div></td>
         </tr>
         <tr class="hot">
           <td><div class="tier-cell"><span class="tier-dot" style="background:#e8b84b"></span><div class="tier-name">Mythic <span class="badge-popular">Best Seller</span></div></div></td>
           <td></td>
-          <td class="price-cell"><div class="price-main">S$0.86<sup>/star</sup></div><div class="price-alt"><span class="cur-pill myr">RM2.75</span><span class="cur-pill idr">Rp12,000</span></div></td>
+          <td class="price-cell"><div class="price-main">Rp12,000<sup>/star</sup></div><div class="price-alt"><span class="cur-pill myr">RM2.75</span></div></td>
         </tr>
         <tr>
           <td><div class="tier-cell"><span class="tier-dot" style="background:#e8b84b"></span><div class="tier-name">Mythic Honor</div></div></td>
           <td></td>
-          <td class="price-cell"><div class="price-main">S$1.08<sup>/star</sup></div><div class="price-alt"><span class="cur-pill myr">RM3.45</span><span class="cur-pill idr">Rp15,000</span></div></td>
+          <td class="price-cell"><div class="price-main">Rp15,000<sup>/star</sup></div><div class="price-alt"><span class="cur-pill myr">RM3.45</span></div></td>
         </tr>
         <tr>
           <td><div class="tier-cell"><span class="tier-dot" style="background:#f3d68a"></span><div class="tier-name">Mythic Glory</div></div></td>
           <td></td>
-          <td class="price-cell"><div class="price-main">S$1.29<sup>/star</sup></div><div class="price-alt"><span class="cur-pill myr">RM4.15</span><span class="cur-pill idr">Rp18,000</span></div></td>
+          <td class="price-cell"><div class="price-main">Rp18,000<sup>/star</sup></div><div class="price-alt"><span class="cur-pill myr">RM4.15</span></div></td>
         </tr>
         <tr>
           <td><div class="tier-cell"><span class="tier-dot" style="background:#f3d68a"></span><div class="tier-name">Mythic Immortal</div></div></td>
           <td></td>
-          <td class="price-cell"><div class="price-main">S$1.43<sup>/star</sup></div><div class="price-alt"><span class="cur-pill myr">RM4.60</span><span class="cur-pill idr">Rp20,000</span></div></td>
+          <td class="price-cell"><div class="price-main">Rp20,000<sup>/star</sup></div><div class="price-alt"><span class="cur-pill myr">RM4.60</span></div></td>
         </tr>
       </tbody>
     </table>
     <div class="table-foot-note">
       <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 16v-5"/><circle cx="12" cy="8" r="0.5" fill="currentColor"/></svg>
-      SGD & MYR prices are estimates based on current exchange rates. Final price is confirmed in IDR (Rp) via WhatsApp.
+      MYR prices are estimates based on current exchange rates. Final price is confirmed in IDR (Rp) via WhatsApp.
     </div>
 
     <div class="table-cta">
@@ -1055,14 +1111,13 @@
       <div class="order-summary">
         <div>
           <div class="order-total-lbl">Estimated Total</div>
-          <div class="order-total-main" id="ordTotalMain">S$5.00</div>
+          <div class="order-total-main" id="ordTotalMain">Rp70,000</div>
           <div class="order-total-alt">
             <span class="cur-pill myr" id="ordTotalMyr">RM16.00</span>
-            <span class="cur-pill idr" id="ordTotalIdr">Rp70,000</span>
           </div>
-          <div class="order-recap" id="ordRecap">10 stars × S$0.50 (Ranked Boosting, Epic)</div>
+          <div class="order-recap" id="ordRecap">10 stars × Rp7,000 (Ranked Boosting, Epic)</div>
         </div>
-        <a href="#" id="ordWaBtn" class="btn-primary" target="_blank" rel="noopener">Order via WhatsApp</a>
+        <a href="#" id="ordWaBtn" class="btn-primary">Lanjut ke Pembayaran</a>
       </div>
       <div class="table-foot-note" style="margin-top:14px;">
         <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 16v-5"/><circle cx="12" cy="8" r="0.5" fill="currentColor"/></svg>
@@ -1082,6 +1137,47 @@
 
 </div>
 <!-- ======================= /PAGE: ORDER ======================= -->
+
+<!-- ======================= ORDER PAYMENT MODAL ======================= -->
+<div class="ord-modal-overlay" id="ordModalOverlay">
+  <div class="ord-modal">
+    <button class="ord-modal-close" id="ordModalClose" aria-label="Close">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg>
+    </button>
+    <h3>Scan & Bayar</h3>
+    <p class="ord-modal-sub">Pilih metode pembayaran, scan QR di bawah, lalu transfer sesuai total yang tertera. Setelah itu, kirim bukti bayar via WhatsApp untuk konfirmasi.</p>
+
+    <div class="ord-method-tabs">
+      <button class="ord-method-tab active" id="ordMethodIdBtn" data-method="idr">QRIS Indonesia</button>
+      <button class="ord-method-tab" id="ordMethodMyBtn" data-method="myr">QR Malaysia (TNG)</button>
+    </div>
+
+    <div class="ord-qr-box">
+      <img id="ordQrImg" src="qris.png" alt="QR Pembayaran" onerror="this.onerror=null;this.src='https://api.qrserver.com/v1/create-qr-code/?size=300x300&color=0a0c16&data=' + encodeURIComponent('ASCENRA Payment');">
+    </div>
+
+    <div class="ord-modal-total">
+      <div class="ord-modal-total-lbl">Total Pembayaran</div>
+      <div class="ord-total-copy-row">
+        <div class="ord-modal-total-val" id="ordModalTotal">Rp70,000</div>
+        <button class="ord-code-copy" id="ordCodeCopyBtn" aria-label="Salin nominal">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="12" height="12" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+        </button>
+      </div>
+    </div>
+
+    <ol class="ord-modal-steps">
+      <li>Scan QR di atas menggunakan e-wallet / m-banking kamu.</li>
+      <li>Transfer sesuai total pembayaran di atas.</li>
+      <li>Tekan tombol di bawah untuk kirim bukti bayar via WhatsApp.</li>
+    </ol>
+
+    <a href="#" id="ordModalConfirmBtn" class="btn-primary ord-modal-confirm" target="_blank" rel="noopener">
+      Saya Sudah Bayar — Konfirmasi via WhatsApp
+    </a>
+  </div>
+</div>
+<!-- ======================= /ORDER PAYMENT MODAL ======================= -->
 
 
 <!-- ======================= PAGE: WINRATE ======================= -->
@@ -1184,7 +1280,7 @@
 
 <script>
   // ---- Order calculator ----
-  var ORD_RATES = { sgd: 13950, myr: 4365 }; // IDR per 1 unit
+  var ORD_RATES = { myr: 4365 }; // IDR per 1 unit
   var ORD_PRICES = {
     boost: { epic:7000, legend:8000, mythic:10000, honor:12000, glory:15000, immortal:18000 },
     carry: { epic:8000, legend:9000, mythic:12000, honor:15000, glory:18000, immortal:20000 }
@@ -1194,7 +1290,6 @@
     tier: { epic:'Epic', legend:'Legend', mythic:'Mythic', honor:'Mythic Honor', glory:'Mythic Glory', immortal:'Mythic Immortal' }
   };
   function ordFmtIdr(n){ return 'Rp' + Math.round(n).toLocaleString('en-US'); }
-  function ordFmtSgd(n){ return 'S$' + n.toFixed(2); }
   function ordFmtMyr(n){ return 'RM' + n.toFixed(2); }
 
   function updateOrderTotal(){
@@ -1207,15 +1302,12 @@
 
     var unitIdr = ORD_PRICES[service][tier];
     var totalIdr = unitIdr * stars;
-    var totalSgd = totalIdr / ORD_RATES.sgd;
     var totalMyr = totalIdr / ORD_RATES.myr;
-    var unitSgd = unitIdr / ORD_RATES.sgd;
 
-    document.getElementById('ordTotalMain').textContent = ordFmtSgd(totalSgd);
+    document.getElementById('ordTotalMain').textContent = ordFmtIdr(totalIdr);
     document.getElementById('ordTotalMyr').textContent = ordFmtMyr(totalMyr);
-    document.getElementById('ordTotalIdr').textContent = ordFmtIdr(totalIdr);
     document.getElementById('ordRecap').textContent =
-      stars + ' stars × ' + ordFmtSgd(unitSgd) + ' (' + ORD_LABELS.service[service] + ', ' + ORD_LABELS.tier[tier] + ')';
+      stars + ' stars × ' + ordFmtIdr(unitIdr) + ' (' + ORD_LABELS.service[service] + ', ' + ORD_LABELS.tier[tier] + ')';
 
     var name = document.getElementById('ordName').value.trim();
     var lines = [
@@ -1223,12 +1315,114 @@
       "Service: " + ORD_LABELS.service[service],
       "Tier: " + ORD_LABELS.tier[tier],
       "Stars: " + stars,
-      "Estimated total: " + ordFmtSgd(totalSgd) + " / " + ordFmtMyr(totalMyr) + " / " + ordFmtIdr(totalIdr)
+      "Estimated total: " + ordFmtIdr(totalIdr) + " / " + ordFmtMyr(totalMyr)
     ];
     if(name) lines.push("IGN: " + name);
-    var msg = encodeURIComponent(lines.join("\n"));
-    document.getElementById('ordWaBtn').href = "https://wa.me/628217785931?text=" + msg;
+
+    // Stash the current order details so the payment modal can build
+    // the WhatsApp confirmation message.
+    window._ordPending = {
+      lines: lines,
+      totalIdrNum: totalIdr,
+      totalMyrNum: totalMyr
+    };
   }
+
+  var ORD_METHOD_INFO = {
+    idr: { qr: 'qris.png', label: 'QRIS Indonesia' },
+    myr: { qr: 'tng.png', label: 'QR Malaysia (TNG)' }
+  };
+
+  // ---- Payment modal ----
+  var ordModalState = null;
+  var ordActiveMethod = 'idr';
+
+  function ordOpenPaymentModal(){
+    if(!window._ordPending) updateOrderTotal();
+    var pending = window._ordPending;
+
+    var myrTotal = Math.round(pending.totalMyrNum * 100) / 100;
+
+    ordModalState = {
+      idr: {
+        finalDisplay: ordFmtIdr(pending.totalIdrNum),
+        finalRaw: pending.totalIdrNum
+      },
+      myr: {
+        finalDisplay: ordFmtMyr(myrTotal),
+        finalRaw: myrTotal.toFixed(2)
+      }
+    };
+
+    ordActiveMethod = 'idr';
+    ordRenderMethod();
+    document.getElementById('ordModalOverlay').classList.add('open');
+    document.body.style.overflow = 'hidden';
+  }
+
+  function ordRenderMethod(){
+    var info = ORD_METHOD_INFO[ordActiveMethod];
+    var state = ordModalState[ordActiveMethod];
+    var pending = window._ordPending;
+
+    document.getElementById('ordQrImg').src = info.qr;
+    document.getElementById('ordModalTotal').textContent = state.finalDisplay;
+    document.getElementById('ordModalTotal').dataset.raw = state.finalRaw;
+
+    document.getElementById('ordMethodIdBtn').classList.toggle('active', ordActiveMethod === 'idr');
+    document.getElementById('ordMethodMyBtn').classList.toggle('active', ordActiveMethod === 'myr');
+
+    var confirmLines = pending.lines.slice();
+    confirmLines.push('Metode Bayar: ' + info.label);
+    confirmLines.push('Total Transfer: ' + state.finalDisplay);
+    confirmLines.push('(Sudah transfer, mohon dicek ya)');
+    var msg = encodeURIComponent(confirmLines.join('\n'));
+    document.getElementById('ordModalConfirmBtn').href = 'https://wa.me/628217785931?text=' + msg;
+  }
+
+  function ordClosePaymentModal(){
+    document.getElementById('ordModalOverlay').classList.remove('open');
+    document.body.style.overflow = '';
+  }
+
+  (function(){
+    var overlay = document.getElementById('ordModalOverlay');
+    var closeBtn = document.getElementById('ordModalClose');
+    var waBtn = document.getElementById('ordWaBtn');
+    var copyBtn = document.getElementById('ordCodeCopyBtn');
+    var methodIdBtn = document.getElementById('ordMethodIdBtn');
+    var methodMyBtn = document.getElementById('ordMethodMyBtn');
+    if(!overlay || !waBtn) return;
+
+    waBtn.addEventListener('click', function(e){
+      e.preventDefault();
+      updateOrderTotal();
+      ordOpenPaymentModal();
+    });
+    closeBtn.addEventListener('click', ordClosePaymentModal);
+    overlay.addEventListener('click', function(e){
+      if(e.target === overlay) ordClosePaymentModal();
+    });
+    document.addEventListener('keydown', function(e){
+      if(e.key === 'Escape') ordClosePaymentModal();
+    });
+    methodIdBtn.addEventListener('click', function(){
+      ordActiveMethod = 'idr';
+      ordRenderMethod();
+    });
+    methodMyBtn.addEventListener('click', function(){
+      ordActiveMethod = 'myr';
+      ordRenderMethod();
+    });
+    copyBtn.addEventListener('click', function(){
+      var totalEl = document.getElementById('ordModalTotal');
+      var raw = totalEl.dataset.raw || totalEl.textContent.replace(/[^0-9.]/g,'');
+      navigator.clipboard.writeText(raw).then(function(){
+        copyBtn.classList.add('copied');
+        setTimeout(function(){ copyBtn.classList.remove('copied'); }, 1500);
+      });
+    });
+  })();
 
   var ordCalcInited = false;
   function initOrderCalc(){
