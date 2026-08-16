@@ -447,7 +447,7 @@
   .order-field{display:flex; flex-direction:column; gap:7px;}
   .order-field label{font-size:12.5px; font-weight:600; color:var(--text-muted); text-transform:uppercase; letter-spacing:0.04em;}
   .order-field select, .order-field input{
-    background:var(--bg-base); border:1px solid var(--line); border-radius:10px;
+    background:var(--bg-deep); border:1px solid var(--line); border-radius:10px;
     padding:12px 14px; color:var(--text-primary); font-family:'Plus Jakarta Sans',sans-serif;
     font-size:14.5px; outline:none; transition:border-color .2s ease;
   }
@@ -488,6 +488,12 @@
   .ord-modal-close:hover{color:var(--text-primary); border-color:var(--text-dim);}
   .ord-modal h3{font-family:'Rajdhani',sans-serif; font-size:21px; font-weight:700; margin-bottom:4px; padding-right:30px;}
   .ord-modal-sub{font-size:13px; color:var(--text-muted); margin-bottom:20px; line-height:1.55;}
+  .ord-order-code{
+    text-align:center; font-family:'JetBrains Mono',monospace; font-size:12.5px; letter-spacing:0.03em;
+    color:var(--text-dim); background:rgba(109,93,252,0.08); border:1px solid rgba(109,93,252,0.3);
+    border-radius:9px; padding:9px 12px; margin-bottom:18px;
+  }
+  .ord-order-code span{color:var(--gold-soft); font-weight:600;}
   .ord-qr-box{
     background:#fff; border-radius:14px; padding:8px; width:210px; height:210px;
     margin:0 auto 18px; display:flex; align-items:center; justify-content:center;
@@ -1103,14 +1109,14 @@
           <input type="number" id="ordStars" value="10" min="1" max="500">
         </div>
         <div class="order-field">
-          <label for="ordName">Your In-Game Name (optional)</label>
-          <input type="text" id="ordName" placeholder="e.g. ShadowBlade">
+          <label for="ordName">Nickname</label>
+          <input type="text" id="ordName" placeholder="e.g. ASCENRA" required>
         </div>
       </div>
 
       <div class="order-summary">
         <div>
-          <div class="order-total-lbl">Estimated Total</div>
+          <div class="order-total-lbl">Total Pembayaran</div>
           <div class="order-total-main" id="ordTotalMain">Rp70,000</div>
           <div class="order-total-alt">
             <span class="cur-pill myr" id="ordTotalMyr">RM16.00</span>
@@ -1146,6 +1152,10 @@
     </button>
     <h3>Scan & Bayar</h3>
     <p class="ord-modal-sub">Pilih metode pembayaran, scan QR di bawah, lalu transfer sesuai total yang tertera. Setelah itu, kirim bukti bayar via WhatsApp untuk konfirmasi.</p>
+
+    <div class="ord-order-code" id="ordOrderCode">
+      Kode Order: <span id="ordOrderCodeVal">—</span>
+    </div>
 
     <div class="ord-method-tabs">
       <button class="ord-method-tab active" id="ordMethodIdBtn" data-method="idr">QRIS Indonesia</button>
@@ -1311,13 +1321,13 @@
 
     var name = document.getElementById('ordName').value.trim();
     var lines = [
-      "Hi, I'd like to place an order:",
       "Service: " + ORD_LABELS.service[service],
       "Tier: " + ORD_LABELS.tier[tier],
       "Stars: " + stars,
-      "Estimated total: " + ordFmtIdr(totalIdr) + " / " + ordFmtMyr(totalMyr)
+      "Total Pembayaran: " + ordFmtIdr(totalIdr) + " / " + ordFmtMyr(totalMyr)
     ];
-    if(name) lines.push("IGN: " + name);
+    if(name) lines.push("Nickname: " + name);
+    else lines.push("Nickname: -");
 
     // Stash the current order details so the payment modal can build
     // the WhatsApp confirmation message.
@@ -1337,13 +1347,32 @@
   var ordModalState = null;
   var ordActiveMethod = 'idr';
 
+  function ordGenerateOrderCode(){
+    var now = new Date();
+    var yy = String(now.getFullYear()).slice(-2);
+    var mm = String(now.getMonth() + 1).padStart(2, '0');
+    var dd = String(now.getDate()).padStart(2, '0');
+    var chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+    var rand = '';
+    for(var i = 0; i < 4; i++){ rand += chars.charAt(Math.floor(Math.random() * chars.length)); }
+    return 'ASC-' + yy + mm + dd + '-' + rand;
+  }
+
   function ordOpenPaymentModal(){
     if(!window._ordPending) updateOrderTotal();
     var pending = window._ordPending;
 
     var myrTotal = Math.round(pending.totalMyrNum * 100) / 100;
+    var orderCode = ordGenerateOrderCode();
+
+    // Insert the order code right after "Total Pembayaran" and before "Nickname"
+    var linesWithCode = pending.lines.slice(0, 4)
+      .concat(['Kode Order: ' + orderCode])
+      .concat(pending.lines.slice(4));
 
     ordModalState = {
+      code: orderCode,
+      lines: linesWithCode,
       idr: {
         finalDisplay: ordFmtIdr(pending.totalIdrNum),
         finalRaw: pending.totalIdrNum
@@ -1354,6 +1383,8 @@
       }
     };
 
+    document.getElementById('ordOrderCodeVal').textContent = orderCode;
+
     ordActiveMethod = 'idr';
     ordRenderMethod();
     document.getElementById('ordModalOverlay').classList.add('open');
@@ -1363,7 +1394,6 @@
   function ordRenderMethod(){
     var info = ORD_METHOD_INFO[ordActiveMethod];
     var state = ordModalState[ordActiveMethod];
-    var pending = window._ordPending;
 
     document.getElementById('ordQrImg').src = info.qr;
     document.getElementById('ordModalTotal').textContent = state.finalDisplay;
@@ -1372,7 +1402,7 @@
     document.getElementById('ordMethodIdBtn').classList.toggle('active', ordActiveMethod === 'idr');
     document.getElementById('ordMethodMyBtn').classList.toggle('active', ordActiveMethod === 'myr');
 
-    var confirmLines = pending.lines.slice();
+    var confirmLines = ordModalState.lines.slice();
     confirmLines.push('Metode Bayar: ' + info.label);
     confirmLines.push('Total Transfer: ' + state.finalDisplay);
     confirmLines.push('(Sudah transfer, mohon dicek ya)');
@@ -1396,6 +1426,17 @@
 
     waBtn.addEventListener('click', function(e){
       e.preventDefault();
+      var nameInput = document.getElementById('ordName');
+      if(!nameInput.value.trim()){
+        nameInput.focus();
+        nameInput.style.borderColor = '#ff5c7a';
+        nameInput.placeholder = 'Nickname wajib diisi';
+        nameInput.addEventListener('input', function resetBorder(){
+          nameInput.style.borderColor = '';
+          nameInput.removeEventListener('input', resetBorder);
+        });
+        return;
+      }
       updateOrderTotal();
       ordOpenPaymentModal();
     });
