@@ -474,6 +474,34 @@
   .order-total-main{font-family:'Rajdhani',sans-serif; font-weight:700; font-size:30px; color:var(--gold-soft); line-height:1.1;}
   .order-total-alt{display:flex; gap:8px; margin-top:8px; flex-wrap:wrap;}
   .order-recap{font-size:13px; color:var(--text-dim); margin-top:10px;}
+  .order-recap div{margin-top:2px;}
+  .order-range-label{
+    grid-column:1 / -1; font-family:'Rajdhani',sans-serif; font-weight:700; font-size:12.5px;
+    letter-spacing:0.1em; text-transform:uppercase; color:var(--gold-soft);
+    margin-top:8px; padding-top:16px; border-top:1px solid var(--line);
+  }
+  .block-title{
+    font-family:'Rajdhani',sans-serif; font-weight:700; font-size:14px; color:var(--gold-soft);
+    margin-top:18px; margin-bottom:13px; padding-bottom:10px; border-bottom:1px solid var(--line);
+    display:flex; justify-content:space-between; align-items:center;
+  }
+  .mode-tag{font-size:10px; background:rgba(109,93,252,0.12); color:var(--violet-glow); padding:3px 9px; border-radius:999px; text-transform:none; letter-spacing:0; font-family:'Plus Jakarta Sans',sans-serif; font-weight:600;}
+  .field-grid{display:grid; grid-template-columns:1.1fr 0.75fr 0.75fr; gap:8px;}
+  .field-grid.point-mode{grid-template-columns:1.1fr 1fr;}
+  .field-grid.tier-only{grid-template-columns:1fr;}
+  .field-grid .order-field{margin:0;}
+  .arrow-divider{display:flex; align-items:center; gap:10px; margin:2px 0 4px; color:var(--gold); font-size:16px; justify-content:center;}
+  .arrow-divider::before, .arrow-divider::after{content:''; flex:1; height:1px; background:var(--line); max-width:120px;}
+  .breakdown{background:var(--bg-deep); border:1px solid var(--line); border-radius:12px; padding:16px 18px; margin-top:20px;}
+  .breakdown .lbl{font-size:11px; letter-spacing:0.08em; text-transform:uppercase; color:var(--text-dim); margin-bottom:11px; font-weight:600;}
+  .seg{display:flex; justify-content:space-between; align-items:center; gap:12px; font-size:13px; color:var(--text-muted); padding:9px 0; border-bottom:1px dashed var(--line); transition:color .15s ease;}
+  .seg:hover{color:var(--text-primary);}
+  .seg:last-child{border-bottom:none;}
+  .seg .seg-name{display:flex; align-items:center; gap:8px;}
+  .seg .seg-dot{width:7px; height:7px; border-radius:50%; flex-shrink:0; box-shadow:0 0 6px 0 currentColor;}
+  .seg b{color:var(--text-primary); font-family:'JetBrains Mono',monospace; font-weight:600; white-space:nowrap;}
+  .point-hint{grid-column:1/-1; font-size:11px; color:var(--text-dim); margin-top:-2px;}
+  .ord-warn{display:flex; align-items:center; gap:8px; color:#ff8a8a; font-size:12.5px; margin-top:14px; padding:10px 12px; background:rgba(255,92,122,0.07); border:1px solid rgba(255,92,122,0.25); border-radius:10px;}
   @media (max-width:640px){
     .order-box{padding:26px 22px;}
     .order-grid{grid-template-columns:1fr;}
@@ -1129,25 +1157,33 @@
             <option value="recovery">Retrieve Account</option>
           </select>
         </div>
-        <div class="order-field" id="ordTierField">
-          <label for="ordTier">Tier</label>
-          <select id="ordTier">
-            <option value="epic">Epic</option>
-            <option value="legend">Legend</option>
-            <option value="mythic">Mythic</option>
-            <option value="honor">Mythic Honor</option>
-            <option value="glory">Mythic Glory</option>
-            <option value="immortal">Mythic Immortal</option>
-          </select>
-        </div>
-        <div class="order-field" id="ordStarsField">
-          <label for="ordStars">Number of Stars</label>
-          <input type="number" id="ordStars" value="10" min="1" max="500">
-        </div>
         <div class="order-field">
           <label for="ordName">Nickname</label>
           <input type="text" id="ordName" placeholder="e.g. ASCENRA" required>
         </div>
+      </div>
+
+      <div id="ordRankBlock">
+        <div class="block-title">
+          Current Rank
+          <span class="mode-tag" id="ordFromModeTag">Division</span>
+        </div>
+        <div class="field-grid" id="ordFromGrid"></div>
+
+        <div class="arrow-divider">↓</div>
+
+        <div class="block-title">
+          Target Rank
+          <span class="mode-tag" id="ordToModeTag">Division</span>
+        </div>
+        <div class="field-grid" id="ordToGrid"></div>
+
+        <div class="breakdown">
+          <div class="lbl">Price breakdown</div>
+          <div id="ordSegList"></div>
+        </div>
+
+        <div id="ordWarnBox"></div>
       </div>
 
       <div class="table-foot-note" id="ordRecoveryNote" style="display:none; margin-top:2px; margin-bottom:22px;">
@@ -1157,14 +1193,14 @@
 
       <div class="order-summary">
         <div>
-          <div class="order-total-lbl" id="ordTotalLbl">Total Pembayaran</div>
-          <div class="order-total-main" id="ordTotalMain">Rp70,000</div>
+          <div class="order-total-lbl" id="ordTotalLbl">Total Payment</div>
+          <div class="order-total-main" id="ordTotalMain">—</div>
           <div class="order-total-alt" id="ordTotalAlt">
-            <span class="cur-pill myr" id="ordTotalMyr">RM16.00</span>
+            <span class="cur-pill myr" id="ordTotalMyr"></span>
           </div>
-          <div class="order-recap" id="ordRecap">10 stars × Rp7,000 (Ranked Boosting, Epic)</div>
+          <div class="order-recap" id="ordRecap">Select your current & target rank to see the price</div>
         </div>
-        <a href="#" id="ordWaBtn" class="btn-primary">Lanjut ke Pembayaran</a>
+        <a href="#" id="ordWaBtn" class="btn-primary">Proceed to Payment</a>
       </div>
       <div class="table-foot-note" id="ordExchangeNote" style="margin-top:14px;">
         <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 16v-5"/><circle cx="12" cy="8" r="0.5" fill="currentColor"/></svg>
@@ -1191,11 +1227,11 @@
     <button class="ord-modal-close" id="ordModalClose" aria-label="Close">
       <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg>
     </button>
-    <h3>Scan & Bayar</h3>
-    <p class="ord-modal-sub">Pilih metode pembayaran, scan QR di bawah, lalu transfer sesuai total yang tertera. Setelah itu, kirim bukti bayar via WhatsApp untuk konfirmasi.</p>
+    <h3>Scan & Pay</h3>
+    <p class="ord-modal-sub">Pick a payment method, scan the QR below, then transfer the exact total shown. After that, send your payment proof via WhatsApp to confirm.</p>
 
     <div class="ord-order-code" id="ordOrderCode">
-      <span>Kode Order: <b id="ordOrderCodeVal">—</b></span>
+      <span>Order Code: <b id="ordOrderCodeVal">—</b></span>
       <span class="ord-order-timer" id="ordOrderTimer">05:00</span>
     </div>
 
@@ -1205,29 +1241,29 @@
     </div>
 
     <div class="ord-qr-box">
-      <img id="ordQrImg" src="qris.png" alt="QR Pembayaran" onerror="this.onerror=null;this.src='https://api.qrserver.com/v1/create-qr-code/?size=300x300&color=0a0c16&data=' + encodeURIComponent('ASCENRA Payment');">
+      <img id="ordQrImg" src="qris.png" alt="Payment QR" onerror="this.onerror=null;this.src='https://api.qrserver.com/v1/create-qr-code/?size=300x300&color=0a0c16&data=' + encodeURIComponent('ASCENRA Payment');">
     </div>
 
     <div class="ord-modal-total">
-      <div class="ord-modal-total-lbl">Total Pembayaran</div>
+      <div class="ord-modal-total-lbl">Total Payment</div>
       <div class="ord-total-copy-row">
         <div class="ord-modal-total-val" id="ordModalTotal">Rp70,000</div>
-        <button class="ord-code-copy" id="ordCodeCopyBtn" aria-label="Salin nominal">
+        <button class="ord-code-copy" id="ordCodeCopyBtn" aria-label="Copy amount">
           <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="12" height="12" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
         </button>
       </div>
     </div>
 
     <ol class="ord-modal-steps">
-      <li>Scan QR di atas menggunakan e-wallet / m-banking kamu.</li>
-      <li>Transfer sesuai total pembayaran di atas.</li>
-      <li>Tekan tombol di bawah untuk kirim bukti bayar via WhatsApp.</li>
+      <li>Scan the QR above using your e-wallet or mobile banking app.</li>
+      <li>Transfer the exact total payment shown above.</li>
+      <li>Tap the button below to send your payment proof via WhatsApp.</li>
     </ol>
 
     <a href="#" id="ordModalConfirmBtn" class="btn-primary ord-modal-confirm" target="_blank" rel="noopener">
-      Saya Sudah Bayar — Konfirmasi via WhatsApp
+      I've Paid — Confirm via WhatsApp
     </a>
-    <a href="javascript:void(0)" id="ordCancelBtn" class="ord-cancel-link">Batalkan Order</a>
+    <a href="javascript:void(0)" id="ordCancelBtn" class="ord-cancel-link">Cancel Order</a>
   </div>
 </div>
 <!-- ======================= /ORDER PAYMENT MODAL ======================= -->
@@ -1339,20 +1375,158 @@
     carry: { epic:8000, legend:9000, mythic:12000, honor:15000, glory:18000, immortal:20000 }
   };
   var ORD_LABELS = {
-    service: { boost:'Ranked Boosting', carry:'Carry Rank', recovery:'Retrieve Account' },
-    tier: { epic:'Epic', legend:'Legend', mythic:'Mythic', honor:'Mythic Honor', glory:'Mythic Glory', immortal:'Mythic Immortal' }
+    service: { boost:'Ranked Boosting', carry:'Carry Rank', recovery:'Retrieve Account' }
   };
+
+  // Tiers that still use the Division + Star system (V-I)
+  var ordStarTierNames = ['epic', 'legend'];
+  var ordStarTierLabels = { epic:'Epic', legend:'Legend' };
+  var ordDivisions = ['V','IV','III','II','I'];
+  var ordStarsPerDivision = 5;
+
+  // Tiers that use a pure Points system (no divisions)
+  var ordPointTierNames = ['mythic','honor','glory','immortal'];
+  var ordPointTierLabels = { mythic:'Mythic', honor:'Mythic Honor', glory:'Mythic Glory', immortal:'Mythic Immortal' };
+  var ordPointRanges = {
+    mythic:   { min:0,   max:25  },
+    honor:    { min:25,  max:50  },
+    glory:    { min:50,  max:100 },
+    immortal: { min:100, max:999 }
+  };
+  var ordTierColors = { epic:'#8891b0', legend:'#8f7bff', mythic:'#e8b84b', honor:'#e8b84b', glory:'#f3d68a', immortal:'#f3d68a' };
+  var ORD_LABELS_TIER = Object.assign({}, ordStarTierLabels, ordPointTierLabels);
+
+  function ordBuildDivList(){
+    var list = [];
+    ordStarTierNames.forEach(function(tier, tIdx){
+      ordDivisions.forEach(function(div, dIdx){
+        list.push({ tierName: tier, tierIdx: tIdx, div: div, dIdx: dIdx, globalIndex: tIdx * ordDivisions.length + dIdx });
+      });
+    });
+    return list;
+  }
+  var ordDivList = ordBuildDivList();
+  var ordStarPhaseEnd = ordDivList.length * ordStarsPerDivision;
+
+  function ordGetGlobalDiv(tierName, divIdx){
+    return ordDivList.filter(function(d){ return d.tierName === tierName && d.dIdx === parseInt(divIdx, 10); })[0];
+  }
+
   function ordFmtIdr(n){ return 'Rp' + Math.round(n).toLocaleString('en-US'); }
   function ordFmtMyr(n){ return 'RM' + n.toFixed(2); }
+
+  // Builds the mini Tier/Division/Stars (or Tier/Points) field-grid for either
+  // the "Current Rank" (isTarget=false) or "Target Rank" (isTarget=true) block.
+  function ordBuildFields(prefix, gridEl, modeTagEl, preserveTier, isTarget){
+    var hasTier = !!preserveTier;
+    var isPoint = hasTier && ordPointTierNames.indexOf(preserveTier) !== -1;
+
+    if(!hasTier){
+      // Nothing chosen yet — just show the Tier picker until the customer sets it.
+      modeTagEl.textContent = '—';
+      gridEl.className = 'field-grid tier-only';
+      gridEl.innerHTML = '<div class="order-field"><label>Tier</label><select id="ord' + prefix + 'Tier"></select></div>';
+    } else if(isPoint){
+      var range = ordPointRanges[preserveTier];
+      modeTagEl.textContent = 'Points';
+      gridEl.className = 'field-grid point-mode';
+      gridEl.innerHTML =
+        '<div class="order-field"><label>Tier</label><select id="ord' + prefix + 'Tier"></select></div>' +
+        '<div class="order-field"><label>' + (isTarget ? 'Target ' : '') + 'Points</label><input type="number" id="ord' + prefix + 'Point" min="' + range.min + '" max="' + range.max + '" placeholder="' + range.min + '–' + range.max + '"></div>' +
+        '<div class="point-hint">' + ordPointTierLabels[preserveTier] + ' range: ' + range.min + '–' + range.max + ' points</div>';
+    } else {
+      modeTagEl.textContent = 'Division';
+      gridEl.className = 'field-grid';
+      gridEl.innerHTML =
+        '<div class="order-field"><label>Tier</label><select id="ord' + prefix + 'Tier"></select></div>' +
+        '<div class="order-field"><label>Division</label><select id="ord' + prefix + 'Div"></select></div>' +
+        '<div class="order-field"><label>Stars</label><select id="ord' + prefix + 'Star"></select></div>';
+    }
+
+    var tierSel = document.getElementById('ord' + prefix + 'Tier');
+    var tierPlaceholder = document.createElement('option');
+    tierPlaceholder.value = '';
+    tierPlaceholder.textContent = 'Select Tier';
+    tierSel.appendChild(tierPlaceholder);
+    ordStarTierNames.forEach(function(t){ var o = document.createElement('option'); o.value = t; o.textContent = ordStarTierLabels[t]; tierSel.appendChild(o); });
+    ordPointTierNames.forEach(function(t){ var o = document.createElement('option'); o.value = t; o.textContent = ordPointTierLabels[t]; tierSel.appendChild(o); });
+    tierSel.value = preserveTier || '';
+
+    if(hasTier && !isPoint){
+      var divSel = document.getElementById('ord' + prefix + 'Div');
+      var divPlaceholder = document.createElement('option');
+      divPlaceholder.value = '';
+      divPlaceholder.textContent = 'Select Division';
+      divSel.appendChild(divPlaceholder);
+      ordDivisions.forEach(function(d, i){ var o = document.createElement('option'); o.value = i; o.textContent = d; divSel.appendChild(o); });
+      var starSel = document.getElementById('ord' + prefix + 'Star');
+      var starPlaceholder = document.createElement('option');
+      starPlaceholder.value = '';
+      starPlaceholder.textContent = 'Select Stars';
+      starSel.appendChild(starPlaceholder);
+      for(var i = 0; i <= ordStarsPerDivision; i++){ var o2 = document.createElement('option'); o2.value = i; o2.textContent = i + '/' + ordStarsPerDivision; starSel.appendChild(o2); }
+      divSel.value = '';
+      starSel.value = '';
+      divSel.addEventListener('change', ordUserUpdate);
+      starSel.addEventListener('change', ordUserUpdate);
+    } else if(hasTier && isPoint){
+      var pointInput = document.getElementById('ord' + prefix + 'Point');
+      pointInput.value = '';
+      pointInput.addEventListener('input', ordUserUpdate);
+      pointInput.addEventListener('blur', function(){
+        if(pointInput.value === '') { ordUserUpdate(); return; }
+        var r = ordPointRanges[tierSel.value];
+        var v = parseInt(pointInput.value, 10);
+        if(isNaN(v)) v = r.min;
+        v = Math.min(Math.max(v, r.min), r.max);
+        pointInput.value = v;
+        ordUserUpdate();
+      });
+      pointInput.addEventListener('wheel', function(e){ e.preventDefault(); }, { passive: false });
+    }
+
+    tierSel.addEventListener('change', function(){
+      ordBuildFields(prefix, gridEl, modeTagEl, tierSel.value, isTarget);
+      ordUserUpdate();
+    });
+  }
+
+  function ordGetAbsolute(prefix){
+    var tierVal = document.getElementById('ord' + prefix + 'Tier').value;
+    var isPoint = ordPointTierNames.indexOf(tierVal) !== -1;
+    if(isPoint){
+      var range = ordPointRanges[tierVal];
+      var pt = parseInt(document.getElementById('ord' + prefix + 'Point').value, 10);
+      if(isNaN(pt)) pt = range.min;
+      pt = Math.min(Math.max(pt, range.min), range.max);
+      return ordStarPhaseEnd + pt;
+    }
+    var divInfo = ordGetGlobalDiv(tierVal, document.getElementById('ord' + prefix + 'Div').value);
+    var star = parseInt(document.getElementById('ord' + prefix + 'Star').value, 10);
+    return divInfo.globalIndex * ordStarsPerDivision + star;
+  }
+
+  // True only once the customer has actually picked every field for this
+  // side (tier, plus division+star or a point value) — not on defaults.
+  function ordRankComplete(prefix){
+    var tierEl = document.getElementById('ord' + prefix + 'Tier');
+    if(!tierEl || !tierEl.value) return false;
+    var isPoint = ordPointTierNames.indexOf(tierEl.value) !== -1;
+    if(isPoint){
+      var ptEl = document.getElementById('ord' + prefix + 'Point');
+      return !!ptEl && ptEl.value !== '';
+    }
+    var divEl = document.getElementById('ord' + prefix + 'Div');
+    var starEl = document.getElementById('ord' + prefix + 'Star');
+    return !!divEl && divEl.value !== '' && !!starEl && starEl.value !== '';
+  }
 
   function updateOrderTotal(){
     var service = document.getElementById('ordService').value;
     var isRecovery = service === 'recovery';
     var name = document.getElementById('ordName').value.trim();
 
-    // Toggle the fields/notes that only apply to priced services (boost/carry)
-    document.getElementById('ordTierField').style.display = isRecovery ? 'none' : '';
-    document.getElementById('ordStarsField').style.display = isRecovery ? 'none' : '';
+    document.getElementById('ordRankBlock').style.display = isRecovery ? 'none' : '';
     document.getElementById('ordRecoveryNote').style.display = isRecovery ? '' : 'none';
     document.getElementById('ordExchangeNote').style.display = isRecovery ? 'none' : '';
     document.getElementById('ordTotalAlt').style.display = isRecovery ? 'none' : '';
@@ -1377,32 +1551,93 @@
       return;
     }
 
-    waBtn.textContent = 'Lanjut ke Pembayaran';
+    waBtn.textContent = 'Proceed to Payment';
     waBtn.removeAttribute('target');
     waBtn.removeAttribute('rel');
     waBtn.href = '#';
 
-    var tier = document.getElementById('ordTier').value;
-    var starsInput = document.getElementById('ordStars');
-    var stars = parseInt(starsInput.value, 10);
-    if(!stars || stars < 1) stars = 1;
-    starsInput.value = stars;
+    if(!ordRankComplete('From') || !ordRankComplete('To')){
+      ordShowPlaceholder();
+      return;
+    }
 
-    var unitIdr = ORD_PRICES[service][tier];
-    var totalIdr = unitIdr * stars;
+    var fromAbsolute = ordGetAbsolute('From');
+    var toAbsolute = ordGetAbsolute('To');
+
+    var segList = document.getElementById('ordSegList');
+    var warnBox = document.getElementById('ordWarnBox');
+    segList.innerHTML = '';
+    warnBox.innerHTML = '';
+
+    document.getElementById('ordTotalLbl').textContent = 'Total Payment';
+
+    if(toAbsolute <= fromAbsolute){
+      warnBox.innerHTML = '<div class="ord-warn">⚠️ Target rank must be higher than your current rank.</div>';
+      document.getElementById('ordTotalMain').textContent = '—';
+      document.getElementById('ordTotalMyr').textContent = '';
+      document.getElementById('ordRecap').textContent = '';
+      window._ordPending = { lines: [], totalIdrNum: 0, totalMyrNum: 0, invalid: true };
+      return;
+    }
+
+    var prices = ORD_PRICES[service];
+    var perSegment = [];
+    var cursor = fromAbsolute;
+
+    // Division phase (Epic, Legend)
+    while(cursor < Math.min(toAbsolute, ordStarPhaseEnd)){
+      var curDivGlobalIdx = Math.floor(cursor / ordStarsPerDivision);
+      var curDivInfo = ordDivList[curDivGlobalIdx];
+      var batas = Math.min((curDivGlobalIdx + 1) * ordStarsPerDivision, toAbsolute, ordStarPhaseEnd);
+      var jumlah = batas - cursor;
+
+      var seg = perSegment.filter(function(s){ return s.key === curDivInfo.tierName; })[0];
+      if(!seg){ seg = { key: curDivInfo.tierName, label: ordStarTierLabels[curDivInfo.tierName], stars: 0, pricePerUnit: prices[curDivInfo.tierName], order: curDivInfo.tierIdx, unit: 'star' }; perSegment.push(seg); }
+      seg.stars += jumlah;
+      cursor = batas;
+    }
+
+    // Points phase (Mythic and above)
+    if(toAbsolute > ordStarPhaseEnd){
+      var mCursor = Math.max(cursor, ordStarPhaseEnd) - ordStarPhaseEnd;
+      var mTarget = toAbsolute - ordStarPhaseEnd;
+
+      while(mCursor < mTarget){
+        var curKey = ordPointTierNames.filter(function(k){ return mCursor >= ordPointRanges[k].min && mCursor < ordPointRanges[k].max; })[0] || 'immortal';
+        var range2 = ordPointRanges[curKey];
+        var batas2 = Math.min(range2.max, mTarget);
+        var jumlah2 = batas2 - mCursor;
+
+        var seg2 = perSegment.filter(function(s){ return s.key === curKey; })[0];
+        if(!seg2){ seg2 = { key: curKey, label: ordPointTierLabels[curKey], stars: 0, pricePerUnit: prices[curKey], order: 100 + ordPointTierNames.indexOf(curKey), unit: 'point' }; perSegment.push(seg2); }
+        seg2.stars += jumlah2;
+        mCursor = batas2;
+      }
+    }
+
+    var totalStars = 0, totalIdr = 0;
+    var recapParts = [];
+    perSegment.sort(function(a, b){ return a.order - b.order; }).forEach(function(seg){
+      var subtotal = seg.stars * seg.pricePerUnit;
+      totalStars += seg.stars;
+      totalIdr += subtotal;
+      recapParts.push(seg.stars + seg.unit.charAt(0) + ' ' + seg.label);
+      var row = document.createElement('div');
+      row.className = 'seg';
+      row.innerHTML = '<span class="seg-name"><span class="seg-dot" style="background:' + ordTierColors[seg.key] + '"></span>' + seg.label + ' — ' + seg.stars + ' ' + seg.unit + ' × ' + ordFmtIdr(seg.pricePerUnit) + '</span><b>' + ordFmtIdr(subtotal) + '</b>';
+      segList.appendChild(row);
+    });
+
     var totalMyr = totalIdr / ORD_RATES.myr;
-
-    document.getElementById('ordTotalLbl').textContent = 'Total Pembayaran';
     document.getElementById('ordTotalMain').textContent = ordFmtIdr(totalIdr);
     document.getElementById('ordTotalMyr').textContent = ordFmtMyr(totalMyr);
-    document.getElementById('ordRecap').textContent =
-      stars + ' stars × ' + ordFmtIdr(unitIdr) + ' (' + ORD_LABELS.service[service] + ', ' + ORD_LABELS.tier[tier] + ')';
+    document.getElementById('ordRecap').textContent = totalStars + ' units · ' + recapParts.join(' + ');
 
     var lines = [
       "Service: " + ORD_LABELS.service[service],
-      "Tier: " + ORD_LABELS.tier[tier],
-      "Stars: " + stars,
-      "Total Pembayaran: " + ordFmtIdr(totalIdr) + " / " + ordFmtMyr(totalMyr)
+      "Breakdown: " + recapParts.join(' + '),
+      "Total Unit: " + totalStars,
+      "Total Payment: " + ordFmtIdr(totalIdr) + " / " + ordFmtMyr(totalMyr)
     ];
     lines.push(name ? "Nickname: " + name : "Nickname: -");
 
@@ -1414,6 +1649,7 @@
       totalMyrNum: totalMyr
     };
   }
+
 
   var ORD_METHOD_INFO = {
     idr: { qr: 'qris.png', label: 'QRIS Indonesia' },
@@ -1438,13 +1674,39 @@
     return 'ASC-' + yy + mm + dd + '-' + rand;
   }
 
+  // Reads the current absolute rank state (tier + div/star, or tier + point) for a prefix.
+  function ordReadRankState(prefix){
+    var tierEl = document.getElementById('ord' + prefix + 'Tier');
+    if(!tierEl) return { tier: '' };
+    var tier = tierEl.value;
+    if(ordPointTierNames.indexOf(tier) !== -1){
+      var pointEl = document.getElementById('ord' + prefix + 'Point');
+      return { tier: tier, point: pointEl ? pointEl.value : '' };
+    }
+    var divEl = document.getElementById('ord' + prefix + 'Div');
+    var starEl = document.getElementById('ord' + prefix + 'Star');
+    return { tier: tier, div: divEl ? divEl.value : '', star: starEl ? starEl.value : '' };
+  }
+
+  // Rebuilds the field-grid for a prefix to match a saved state, then fills in the value.
+  function ordRestoreRankState(prefix, gridEl, modeTagEl, isTarget, state){
+    if(!state || !state.tier) return;
+    ordBuildFields(prefix, gridEl, modeTagEl, state.tier, isTarget);
+    if(ordPointTierNames.indexOf(state.tier) !== -1){
+      if(state.point !== undefined) document.getElementById('ord' + prefix + 'Point').value = state.point;
+    } else {
+      if(state.div !== undefined) document.getElementById('ord' + prefix + 'Div').value = state.div;
+      if(state.star !== undefined) document.getElementById('ord' + prefix + 'Star').value = state.star;
+    }
+  }
+
   // Uniquely identifies "the same order" — if any of these change, it's a new order.
   function ordBuildSignature(){
     var service = document.getElementById('ordService').value;
-    var tier = document.getElementById('ordTier') ? document.getElementById('ordTier').value : '';
-    var stars = document.getElementById('ordStars') ? document.getElementById('ordStars').value : '';
+    var from = ordReadRankState('From');
+    var to = ordReadRankState('To');
     var name = document.getElementById('ordName').value.trim().toLowerCase();
-    return [service, tier, stars, name].join('|');
+    return [service, from.tier, from.div, from.star, from.point, to.tier, to.div, to.star, to.point, name].join('|');
   }
 
   function ordLoadStoredOrder(){
@@ -1504,21 +1766,29 @@
     var waBtn = document.getElementById('ordWaBtn');
     if(!notice || !waBtn) return;
 
-    var fieldIds = ['ordService', 'ordTier', 'ordStars', 'ordName'];
+    var fromGrid = document.getElementById('ordFromGrid');
+    var toGrid = document.getElementById('ordToGrid');
+    var fromModeTag = document.getElementById('ordFromModeTag');
+    var toModeTag = document.getElementById('ordToModeTag');
     var stored = ordLoadStoredOrder();
+
+    function lockableEls(){
+      var els = [document.getElementById('ordService'), document.getElementById('ordName')];
+      return els.concat(
+        Array.prototype.slice.call(fromGrid.querySelectorAll('select, input')),
+        Array.prototype.slice.call(toGrid.querySelectorAll('select, input'))
+      );
+    }
 
     if(stored && stored.code){
       // Restore the locked order's values onto the form so what's shown
       // always matches the pending order, even after a page reload.
       if(stored.service) document.getElementById('ordService').value = stored.service;
-      if(stored.tier) document.getElementById('ordTier').value = stored.tier;
-      if(stored.stars) document.getElementById('ordStars').value = stored.stars;
+      ordRestoreRankState('From', fromGrid, fromModeTag, false, stored.from);
+      ordRestoreRankState('To', toGrid, toModeTag, true, stored.to);
       if(typeof stored.name === 'string') document.getElementById('ordName').value = stored.name;
 
-      fieldIds.forEach(function(id){
-        var el = document.getElementById(id);
-        if(el) el.disabled = true;
-      });
+      lockableEls().forEach(function(el){ if(el) el.disabled = true; });
 
       notice.style.display = 'flex';
       codeEl.textContent = stored.code;
@@ -1526,10 +1796,7 @@
 
       updateOrderTotal();
     } else {
-      fieldIds.forEach(function(id){
-        var el = document.getElementById(id);
-        if(el) el.disabled = false;
-      });
+      lockableEls().forEach(function(el){ if(el) el.disabled = false; });
       notice.style.display = 'none';
       waBtn.classList.remove('disabled');
     }
@@ -1564,18 +1831,18 @@
         signature: signature,
         expiresAt: expiresAt,
         service: document.getElementById('ordService').value,
-        tier: document.getElementById('ordTier').value,
-        stars: document.getElementById('ordStars').value,
+        from: ordReadRankState('From'),
+        to: ordReadRankState('To'),
         name: document.getElementById('ordName').value.trim()
       });
     }
 
     ordApplyFormLock();
 
-    // Insert the order code right after "Total Pembayaran" and before "Nickname"
-    var linesWithCode = pending.lines.slice(0, 4)
-      .concat(['Kode Order: ' + orderCode])
-      .concat(pending.lines.slice(4));
+    // Insert the order code right after "Total Payment" and before "Nickname"
+    var linesWithCode = pending.lines.slice(0, 5)
+      .concat(['Order Code: ' + orderCode])
+      .concat(pending.lines.slice(5));
 
     ordModalState = {
       code: orderCode,
@@ -1612,9 +1879,9 @@
     document.getElementById('ordMethodMyBtn').classList.toggle('active', ordActiveMethod === 'myr');
 
     var confirmLines = ordModalState.lines.slice();
-    confirmLines.push('Metode Bayar: ' + info.label);
+    confirmLines.push('Payment Method: ' + info.label);
     confirmLines.push('Total Transfer: ' + state.finalDisplay);
-    confirmLines.push('(Sudah transfer, mohon dicek ya)');
+    confirmLines.push('(Already transferred, please check)');
     var msg = encodeURIComponent(confirmLines.join('\n'));
     document.getElementById('ordModalConfirmBtn').href = 'https://wa.me/628217785931?text=' + msg;
   }
@@ -1641,7 +1908,7 @@
         e.preventDefault();
         nameInput.focus();
         nameInput.style.borderColor = '#ff5c7a';
-        nameInput.placeholder = 'Nickname wajib diisi';
+        nameInput.placeholder = 'Nickname is required';
         nameInput.addEventListener('input', function resetBorder(){
           nameInput.style.borderColor = '';
           nameInput.removeEventListener('input', resetBorder);
@@ -1657,6 +1924,15 @@
         return;
       }
       e.preventDefault();
+      if(window._ordPending && window._ordPending.invalid){
+        var toTierEl = document.getElementById('ordToTier');
+        toTierEl.style.borderColor = '#ff5c7a';
+        toTierEl.addEventListener('change', function resetBorder(){
+          toTierEl.style.borderColor = '';
+          toTierEl.removeEventListener('change', resetBorder);
+        });
+        return;
+      }
       ordOpenPaymentModal();
     });
     closeBtn.addEventListener('click', ordClosePaymentModal);
@@ -1709,16 +1985,47 @@
   })();
 
   var ordCalcInited = false;
+  var ordHasInteracted = false;
+
+  // Blank/neutral state shown until the customer actually touches the
+  // rank fields — so the price doesn't look pre-filled on first load.
+  function ordShowPlaceholder(){
+    document.getElementById('ordTotalLbl').textContent = 'Total Payment';
+    document.getElementById('ordTotalMain').textContent = '—';
+    document.getElementById('ordTotalMyr').textContent = '';
+    document.getElementById('ordRecap').textContent = 'Select your current & target rank to see the price';
+    var segList = document.getElementById('ordSegList');
+    var warnBox = document.getElementById('ordWarnBox');
+    if(segList) segList.innerHTML = '';
+    if(warnBox) warnBox.innerHTML = '';
+    window._ordPending = null;
+  }
+
+  // Wrapper used by the rank/service/name fields: marks that the customer
+  // has genuinely interacted before letting the real calculation run.
+  function ordUserUpdate(){
+    ordHasInteracted = true;
+    updateOrderTotal();
+  }
+
   function initOrderCalc(){
     if(!document.getElementById('ordService')) return;
+    if(!ordCalcInited){
+      ordCalcInited = true;
+      ordBuildFields('From', document.getElementById('ordFromGrid'), document.getElementById('ordFromModeTag'), '', false);
+      ordBuildFields('To', document.getElementById('ordToGrid'), document.getElementById('ordToModeTag'), '', true);
+      document.getElementById('ordService').addEventListener('change', ordUserUpdate);
+      document.getElementById('ordName').addEventListener('input', ordUserUpdate);
+    }
     ordApplyFormLock();
-    updateOrderTotal();
-    if(ordCalcInited) return;
-    ordCalcInited = true;
-    document.getElementById('ordService').addEventListener('change', updateOrderTotal);
-    document.getElementById('ordTier').addEventListener('change', updateOrderTotal);
-    document.getElementById('ordStars').addEventListener('input', updateOrderTotal);
-    document.getElementById('ordName').addEventListener('input', updateOrderTotal);
+    if(ordLoadStoredOrder()){
+      // A pending/locked order exists — always show its real total.
+      updateOrderTotal();
+    } else if(ordHasInteracted){
+      updateOrderTotal();
+    } else {
+      ordShowPlaceholder();
+    }
   }
   if(document.readyState === 'loading'){
     document.addEventListener('DOMContentLoaded', initOrderCalc);
@@ -1739,7 +2046,9 @@
     var sel = document.getElementById('ordService');
     if(sel){
       sel.value = service;
-      updateOrderTotal();
+      // Just preselect the service — don't compute a price yet. The
+      // total only appears once the customer actually sets their rank.
+      if(ordHasInteracted) updateOrderTotal();
     }
   }
 
